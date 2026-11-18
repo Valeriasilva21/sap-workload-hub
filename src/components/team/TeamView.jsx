@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import { Eraser, Pencil, RotateCcw, Trash2, UserPlus, Users } from 'lucide-react'
+import { LevelBadge } from '../ui/Badges'
 import { useStore } from '../../store/useStore'
 import { memberLoad } from '../../lib/selectors'
 import { Avatar, CapacityBar, SectionCard, Toast, Toggle } from '../ui/Primitives'
@@ -27,12 +28,15 @@ function MemberRow({ member, week, onEdit, onToast }) {
     <li className={`flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center ${active ? '' : 'bg-slate-50'}`}>
       <div className={`flex min-w-0 flex-1 items-center gap-3 ${active ? '' : 'opacity-60'}`}>
         <Avatar member={member} size="lg" />
-        <div className="min-w-0">
+        <div className="min-w-0 cursor-pointer" onClick={() => onEdit(member)} title="Editar integrante">
           <p className="flex items-center gap-2 truncate font-semibold text-slate-900">
             {member.name}
             {!active && <span className="badge bg-slate-100 text-slate-600 ring-slate-300">Inactivo</span>}
           </p>
-          <p className="truncate text-sm text-slate-600">{member.role || 'Sin rol definido'}</p>
+          <p className="flex min-w-0 items-center gap-2 text-sm text-slate-600">
+            <span className="truncate">{member.role || 'Sin rol definido'}</span>
+            <LevelBadge level={member.level} />
+          </p>
         </div>
       </div>
 
@@ -76,8 +80,13 @@ function MemberRow({ member, week, onEdit, onToast }) {
           <span className="w-12">{active ? 'Activo' : 'Inactivo'}</span>
         </label>
         <div className="flex">
-          <button onClick={() => onEdit(member)} className="btn-ghost p-2" aria-label={`Editar ${member.name}`} title="Editar">
-            <Pencil className="h-4 w-4" />
+          <button
+            onClick={() => onEdit(member)}
+            className="btn-secondary px-3 py-1.5 text-xs"
+            aria-label={`Editar ${member.name}`}
+            title="Editar nombre, rol, nivel, capacidad y color"
+          >
+            <Pencil className="h-3.5 w-3.5" /> Editar
           </button>
           <button
             onClick={remove}

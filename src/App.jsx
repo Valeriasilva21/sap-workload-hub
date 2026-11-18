@@ -4,6 +4,7 @@ import Dashboard from './components/dashboard/Dashboard'
 import KanbanBoard from './components/kanban/KanbanBoard'
 import MyWeek from './components/myweek/MyWeek'
 import TeamView from './components/team/TeamView'
+import ProjectsView from './components/projects/ProjectsView'
 import { currentWeekISO } from './lib/date'
 import { usePersistentState } from './lib/usePersistentState'
 import { useTheme } from './lib/useTheme'
@@ -52,6 +53,7 @@ export default function App() {
           {view === 'dashboard' && <Dashboard week={week} onOpenMember={openMember} onNavigate={setView} />}
           {view === 'kanban' && <KanbanBoard week={week} />}
           {view === 'myweek' && <MyWeek week={week} memberId={memberId} onMemberChange={setMemberId} onNavigate={setView} />}
+          {view === 'projects' && <ProjectsView week={week} />}
           {view === 'team' && <TeamView week={week} />}
         </main>
       </div>

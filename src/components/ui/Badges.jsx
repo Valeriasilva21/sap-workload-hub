@@ -1,5 +1,5 @@
 import { Ban, CircleCheck, TriangleAlert } from 'lucide-react'
-import { COLOR_CLASSES, LOAD_STATUS_LIST, stageById, techById } from '../../lib/constants'
+import { COLOR_CLASSES, LOAD_STATUS_LIST, levelById, stageById, techById } from '../../lib/constants'
 
 /** Tecnología (CPI, PI/PO, IDoc…): etiqueta técnica en monoespaciada. */
 export function TechBadge({ tech }) {
@@ -9,6 +9,13 @@ export function TechBadge({ tech }) {
       {t.label}
     </span>
   )
+}
+
+/** Nivel de seniority del integrante. No muestra nada si no tiene nivel. */
+export function LevelBadge({ level }) {
+  const l = levelById(level)
+  if (!l) return null
+  return <span className={`badge ${l.className}`}>{l.label}</span>
 }
 
 export function StageBadge({ stage }) {

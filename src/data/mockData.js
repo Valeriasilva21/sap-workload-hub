@@ -13,11 +13,11 @@ export function buildSeed() {
   const now = new Date().toISOString()
 
   const members = [
-    { id: 'm1', name: 'Valentina Rojas', role: 'Arquitecta de Integración', capacity: 40, color: 'indigo' },
-    { id: 'm2', name: 'Matías Fuentes', role: 'Senior CPI Developer', capacity: 40, color: 'sky' },
-    { id: 'm3', name: 'Camila Herrera', role: 'Desarrolladora PI/PO & ABAP', capacity: 40, color: 'violet' },
-    { id: 'm4', name: 'Diego Muñoz', role: 'Consultor CPI / API Management', capacity: 40, color: 'emerald' },
-    { id: 'm5', name: 'Javiera Soto', role: 'Desarrolladora ABAP / IDoc', capacity: 30, color: 'orange' },
+    { id: 'm1', name: 'Valentina Rojas', role: 'Arquitecta de Integración', level: 'architect', capacity: 40, color: 'indigo' },
+    { id: 'm2', name: 'Matías Fuentes', role: 'Senior CPI Developer', level: 'senior', capacity: 40, color: 'sky' },
+    { id: 'm3', name: 'Camila Herrera', role: 'Desarrolladora PI/PO & ABAP', level: 'semisenior', capacity: 40, color: 'violet' },
+    { id: 'm4', name: 'Diego Muñoz', role: 'Consultor CPI / API Management', level: 'senior', capacity: 40, color: 'emerald' },
+    { id: 'm5', name: 'Javiera Soto', role: 'Desarrolladora ABAP / IDoc', level: 'junior', capacity: 30, color: 'orange' },
   ]
 
   const projects = [

@@ -1,7 +1,7 @@
 import { ArrowRight, Ban, Users } from 'lucide-react'
 import { COLOR_CLASSES } from '../../lib/constants'
 import { Avatar, CapacityBar, SectionCard } from '../ui/Primitives'
-import { LoadPill, Semaphore, SemaphoreLegend } from '../ui/Badges'
+import { LevelBadge, LoadPill, Semaphore, SemaphoreLegend } from '../ui/Badges'
 
 function MemberLoadCard({ load, onOpen }) {
   const { member, hours, capacity, pct, status, breakdown, blocked, free } = load
@@ -11,7 +11,7 @@ function MemberLoadCard({ load, onOpen }) {
         <Avatar member={member} size="lg" />
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold text-slate-900">{member.name}</p>
-          <p className="truncate text-xs text-slate-600">{member.role}</p>
+          <p className="flex min-w-0 items-center gap-1.5 text-xs text-slate-600"><span className="truncate">{member.role}</span><LevelBadge level={member.level} /></p>
           <div className="mt-1.5">
             <LoadPill status={status} />
           </div>

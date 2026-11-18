@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Check } from 'lucide-react'
 import { useStore } from '../../store/useStore'
-import { COLOR_CLASSES, MEMBER_COLOR_KEYS } from '../../lib/constants'
+import { COLOR_CLASSES, MEMBER_COLOR_KEYS, MEMBER_LEVELS } from '../../lib/constants'
+import { LevelBadge } from '../ui/Badges'
 import { Avatar, Field, Modal } from '../ui/Primitives'
 
 const ROLE_SUGGESTIONS = [
@@ -18,15 +19,15 @@ const CAPACITY_CHIPS = [20, 30, 40, 45]
 export default function MemberFormModal({ open, onClose, member, onSaved }) {
   const { state, actions } = useStore()
   const isEdit = Boolean(member)
-  const [form, setForm] = useState({ name: '', role: '', capacity: 40, color: '' })
+  const [form, setForm] = useState({ name: '', role: '', level: '', capacity: 40, color: '' })
 
   useEffect(() => {
     if (!open) return
     if (member) {
-      setForm({ name: member.name, role: member.role ?? '', capacity: member.capacity, color: member.color })
+      setForm({ name: member.name, role: member.role ?? '', level: member.level ?? '', capacity: member.capacity, color: member.color })
     } else {
       const used = new Set(state.members.map((m) => m.color))
-      setForm({ name: '', role: '', capacity: 40, color: MEMBER_COLOR_KEYS.find((c) => !used.has(c)) ?? 'blue' })
+      setForm({ name: '', role: '', level: '', capacity: 40, color: MEMBER_COLOR_KEYS.find((c) => !used.has(c)) ?? 'blue' })
     }
     // Se reinicia solo al abrir o al cambiar de integrante
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,7 +42,7 @@ export default function MemberFormModal({ open, onClose, member, onSaved }) {
   const submit = (e) => {
     e.preventDefault()
     if (!valid) return
-    const data = { name, role: form.role.trim(), capacity, color: form.color }
+    const data = { name, role: form.role.trim(), level: form.level, capacity, color: form.color }
     if (isEdit) {
       actions.updateMember(member.id, data)
       onSaved?.(`${name} actualizado`)
@@ -77,7 +78,10 @@ export default function MemberFormModal({ open, onClose, member, onSaved }) {
           <Avatar member={{ name: name || '?', color: form.color }} size="lg" />
           <div className="min-w-0">
             <p className="truncate font-semibold text-slate-900">{name || 'Nombre del integrante'}</p>
-            <p className="truncate text-sm text-slate-600">{form.role || 'Rol'}</p>
+            <p className="flex min-w-0 items-center gap-2 text-sm text-slate-600">
+              <span className="truncate">{form.role || 'Rol'}</span>
+              <LevelBadge level={form.level} />
+            </p>
           </div>
           <span className="mono ml-auto shrink-0 whitespace-nowrap text-sm font-medium text-slate-700">{capacity || 0} h/sem</span>
         </div>
@@ -94,6 +98,26 @@ export default function MemberFormModal({ open, onClose, member, onSaved }) {
           />
           {duplicate && <span className="mt-1 block text-xs text-red-600">Ya hay alguien con ese nombre en el equipo.</span>}
         </Field>
+
+        <div>
+          <span className="label">Nivel</span>
+          <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Nivel">
+            {[{ id: '', label: 'Sin nivel' }, ...MEMBER_LEVELS].map((l) => (
+              <button
+                key={l.id || 'none'}
+                type="button"
+                role="radio"
+                aria-checked={form.level === l.id}
+                onClick={() => set('level')(l.id)}
+                className={`rounded-full border px-3 py-1 text-sm font-medium ${
+                  form.level === l.id ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-200 bg-surface text-slate-700 hover:border-slate-300'
+                }`}
+              >
+                {l.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
         <Field label="Rol" hint="Elige una sugerencia o escribe el tuyo">
           <input

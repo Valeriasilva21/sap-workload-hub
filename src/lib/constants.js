@@ -72,6 +72,16 @@ export const COLOR_CLASSES = {
   sky: 'bg-sky-600',
 }
 
+// Niveles de seniority de los integrantes (el rol sigue siendo texto libre)
+export const MEMBER_LEVELS = [
+  { id: 'junior', label: 'Junior', className: 'bg-slate-50 text-slate-700 ring-slate-300' },
+  { id: 'semisenior', label: 'Semi Senior', className: 'bg-sky-50 text-sky-700 ring-sky-600/30 dark:bg-sky-500/15 dark:text-sky-300' },
+  { id: 'senior', label: 'Senior', className: 'bg-blue-50 text-blue-700 ring-blue-600/30' },
+  { id: 'lead', label: 'Líder técnico', className: 'bg-violet-50 text-violet-700 ring-violet-600/30 dark:bg-violet-500/15 dark:text-violet-300' },
+  { id: 'architect', label: 'Arquitecto/a', className: 'bg-amber-50 text-amber-800 ring-amber-600/30' },
+]
+export const levelById = (id) => MEMBER_LEVELS.find((l) => l.id === id) ?? null
+
 // Colores disponibles para avatares de integrantes
 export const MEMBER_COLOR_KEYS = ['indigo', 'sky', 'violet', 'emerald', 'orange', 'rose', 'teal', 'amber', 'cyan', 'blue', 'slate']
 

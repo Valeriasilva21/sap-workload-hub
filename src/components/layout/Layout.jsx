@@ -1,4 +1,4 @@
-import { CalendarCheck, ChevronLeft, ChevronRight, LayoutDashboard, Monitor, Moon, Network, SquareKanban, Sun, Users } from 'lucide-react'
+import { CalendarCheck, ChevronLeft, ChevronRight, LayoutDashboard, Monitor, Moon, Network, SquareKanban, Sun, Users, FolderKanban } from 'lucide-react'
 import { addWeeks, currentWeekISO, formatWeekRange, isoWeekNumber } from '../../lib/date'
 import { useStore } from '../../store/useStore'
 import { SyncCard, SyncPill } from './SyncStatus'
@@ -7,6 +7,7 @@ export const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', title: 'Dashboard', subtitle: 'Capacidad, avance y bloqueos del equipo de Integraciones', icon: LayoutDashboard },
   { id: 'kanban', label: 'Tablero', title: 'Integraciones', subtitle: 'Ciclo de vida SAP: del backlog a producción', icon: SquareKanban },
   { id: 'myweek', label: 'Mi Semana', title: 'Mi Semana', subtitle: 'Registra tu carga en menos de 2 minutos', icon: CalendarCheck },
+  { id: 'projects', label: 'Proyectos', title: 'Proyectos', subtitle: 'Proyectos y clientes que agrupan las interfaces', icon: FolderKanban },
   { id: 'team', label: 'Equipo', title: 'Equipo', subtitle: 'Integrantes, roles y capacidad semanal', icon: Users },
 ]
 

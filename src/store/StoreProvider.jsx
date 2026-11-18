@@ -36,6 +36,18 @@ function reducer(state, action) {
       return { ...state, [action.key]: state[action.key].filter((x) => x.id !== action.id) }
     case 'ADD_PROJECT':
       return { ...state, projects: [...state.projects, action.project] }
+    case 'UPDATE_PROJECT':
+      return { ...state, projects: state.projects.map((p) => (p.id === action.id ? { ...p, ...action.changes } : p)) }
+    case 'DELETE_PROJECT': {
+      // Se eliminan también sus interfaces y las horas registradas en ellas
+      const removed = new Set(state.integrations.filter((i) => i.projectId === action.id).map((i) => i.id))
+      return {
+        ...state,
+        projects: state.projects.filter((p) => p.id !== action.id),
+        integrations: state.integrations.filter((i) => !removed.has(i.id)),
+        allocations: state.allocations.filter((a) => !removed.has(a.integrationId)),
+      }
+    }
     case 'ADD_INTEGRATION':
       return { ...state, integrations: [...state.integrations, normalizeIntegration(action.integration)] }
     case 'UPDATE_INTEGRATION':
@@ -102,7 +114,7 @@ export function StoreProvider({ children }) {
 
   const actions = useMemo(
     () => ({
-      addProject({ name, code }) {
+      addProject({ name, code, color }) {
         const { projects } = stateRef.current
         const project = {
           id: uid('p'),
@@ -115,11 +127,13 @@ export function StoreProvider({ children }) {
               .join('')
               .slice(0, 4)
               .toUpperCase(),
-          color: PROJECT_COLOR_KEYS[projects.length % PROJECT_COLOR_KEYS.length],
+          color: color || PROJECT_COLOR_KEYS[projects.length % PROJECT_COLOR_KEYS.length],
         }
         dispatch({ type: 'ADD_PROJECT', project })
         return project
       },
+      updateProject: (id, changes) => dispatch({ type: 'UPDATE_PROJECT', id, changes }),
+      deleteProject: (id) => dispatch({ type: 'DELETE_PROJECT', id }),
       addIntegration(data) {
         const integration = {
           id: uid('i'),

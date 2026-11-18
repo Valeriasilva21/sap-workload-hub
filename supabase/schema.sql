@@ -19,6 +19,7 @@ create table if not exists public.members (
   id         text primary key default gen_random_uuid()::text,
   name       text not null check (length(trim(name)) between 2 and 60),
   role       text not null default '',
+  level      text not null default '' check (level in ('', 'junior', 'semisenior', 'senior', 'lead', 'architect')),
   capacity   numeric(4,1) not null default 40 check (capacity > 0 and capacity <= 60),
   color      text not null default 'blue',
   active     boolean not null default true,
@@ -60,6 +61,10 @@ create table if not exists public.allocations (
   created_at     timestamptz not null default now(),
   unique (member_id, integration_id, week_start)
 );
+
+-- Cambios para bases creadas con una versión anterior de este archivo
+alter table public.members add column if not exists level text not null default ''
+  check (level in ('', 'junior', 'semisenior', 'senior', 'lead', 'architect'));
 
 -- Índices para las llaves foráneas y la consulta por semana
 create index if not exists integrations_project_id_idx on public.integrations (project_id);
