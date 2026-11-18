@@ -26,7 +26,7 @@ export function CapacityBar({ pct, status, className = 'h-2.5' }) {
   const MAX = 125
   const width = (Math.min(pct, MAX) / MAX) * 100
   return (
-    <div className={`relative w-full rounded-full bg-ink/[0.06] ${className}`}>
+    <div className={`relative w-full rounded-full bg-slate-200/70 ${className}`}>
       <div className={`absolute inset-y-0 left-0 rounded-full transition-all ${status.bar}`} style={{ width: `${width}%` }} />
       <div
         className="absolute -inset-y-1 w-[2px] rounded-full bg-slate-900/40"
@@ -39,7 +39,7 @@ export function CapacityBar({ pct, status, className = 'h-2.5' }) {
 
 export function ProgressBar({ value, className = 'h-1.5', color = 'bg-blue-600' }) {
   return (
-    <div className={`w-full overflow-hidden rounded-full bg-ink/[0.06] ${className}`}>
+    <div className={`w-full overflow-hidden rounded-full bg-slate-200/70 ${className}`}>
       <div className={`h-full rounded-full transition-all ${color}`} style={{ width: `${Math.min(100, value)}%` }} />
     </div>
   )
@@ -82,8 +82,8 @@ export function Modal({ open, onClose, title, subtitle, children, footer }) {
   if (!open) return null
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4" role="dialog" aria-modal="true">
-      <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" onClick={onClose} />
-      <div className="relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-[22px] bg-surface shadow-apple-lg sm:max-w-2xl sm:rounded-[22px]">
+      <div className="absolute inset-0 bg-slate-900/20 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-[22px] border border-white/80 bg-white/85 shadow-apple-lg backdrop-blur-2xl backdrop-saturate-150 sm:max-w-2xl sm:rounded-[22px]">
         <span className="mx-auto mt-2 h-1.5 w-10 rounded-full bg-slate-300 sm:hidden" />
         <div className="flex items-start justify-between gap-4 px-6 pb-2 pt-5">
           <div>
@@ -95,7 +95,7 @@ export function Modal({ open, onClose, title, subtitle, children, footer }) {
           </button>
         </div>
         <div className="overflow-y-auto px-6 py-4">{children}</div>
-        {footer && <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/80 bg-slate-50/80 px-6 py-3.5">{footer}</div>}
+        {footer && <div className="flex flex-wrap items-center justify-between gap-2 border-t border-white/70 bg-white/50 px-6 py-3.5">{footer}</div>}
       </div>
     </div>
   )
@@ -117,7 +117,7 @@ export function SectionCard({ title, subtitle, icon: Icon, actions, children, cl
       <header className="flex flex-wrap items-center justify-between gap-3 px-5 pb-2 pt-5">
         <div className="flex items-center gap-2.5">
           {Icon && (
-            <span className="flex h-8 w-8 items-center justify-center rounded-[9px] bg-blue-50 text-blue-600">
+            <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-gradient-to-br from-blue-500/15 to-indigo-500/15 text-blue-600 ring-1 ring-inset ring-blue-500/15">
               <Icon className="h-[18px] w-[18px]" />
             </span>
           )}

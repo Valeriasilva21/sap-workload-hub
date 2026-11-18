@@ -1,4 +1,4 @@
-import { CalendarCheck, ChevronLeft, ChevronRight, LayoutDashboard, Monitor, Moon, Network, SquareKanban, Sun, Users, FolderKanban } from 'lucide-react'
+import { CalendarCheck, ChevronLeft, ChevronRight, LayoutDashboard, Network, SquareKanban, Users, FolderKanban } from 'lucide-react'
 import { addWeeks, currentWeekISO, formatWeekRange, isoWeekNumber } from '../../lib/date'
 import { useStore } from '../../store/useStore'
 import { SyncCard, SyncPill } from './SyncStatus'
@@ -21,62 +21,14 @@ function AppIcon({ size = 'h-9 w-9' }) {
   )
 }
 
-const THEMES = [
-  { id: 'auto', label: 'Auto', icon: Monitor },
-  { id: 'light', label: 'Claro', icon: Sun },
-  { id: 'dark', label: 'Oscuro', icon: Moon },
-]
-
-/** Control segmentado de apariencia (como en Ajustes del Sistema). */
-export function ThemeSwitcher({ theme, onChange }) {
-  return (
-    <div className="grid grid-cols-3 gap-0.5 rounded-[9px] bg-ink/[0.06] p-0.5" role="radiogroup" aria-label="Apariencia">
-      {THEMES.map(({ id, label, icon: Icon }) => (
-        <button
-          key={id}
-          role="radio"
-          aria-checked={theme === id}
-          onClick={() => onChange(id)}
-          className={`flex items-center justify-center gap-1 rounded-[7px] py-1 text-[11px] font-medium transition ${
-            theme === id
-              ? 'bg-surface text-slate-900 shadow-[0_1px_3px_rgba(0,0,0,0.12)] dark:bg-slate-400'
-              : 'text-slate-600 hover:text-slate-700'
-          }`}
-        >
-          <Icon className="h-3.5 w-3.5" />
-          {label}
-        </button>
-      ))}
-    </div>
-  )
-}
-
-/** Botón compacto para móvil: rota Auto → Claro → Oscuro. */
-function ThemeCycleButton({ theme, onChange }) {
-  const idx = THEMES.findIndex((t) => t.id === theme)
-  const current = THEMES[idx] ?? THEMES[0]
-  const next = THEMES[(idx + 1) % THEMES.length]
-  const Icon = current.icon
-  return (
-    <button
-      onClick={() => onChange(next.id)}
-      className="flex h-9 w-9 items-center justify-center rounded-full bg-ink/[0.05] text-slate-600 lg:hidden"
-      aria-label={`Apariencia: ${current.label}. Cambiar a ${next.label}`}
-      title={`Apariencia: ${current.label}`}
-    >
-      <Icon className="h-[18px] w-[18px]" />
-    </button>
-  )
-}
-
 /** Barra lateral estilo macOS: material translúcido, selección en gris suave, íconos en azul. */
-export function Sidebar({ view, onNavigate, theme, onThemeChange }) {
+export function Sidebar({ view, onNavigate }) {
   const { actions } = useStore()
   const reset = () => {
     if (window.confirm('¿Restaurar los datos de demostración? Se perderán los cambios locales.')) actions.resetDemo()
   }
   return (
-    <aside className="glass fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-slate-200/80 px-3 pb-4 pt-6 lg:flex">
+    <aside className="glass fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r px-3 pb-4 pt-6 lg:flex">
       <div className="flex items-center gap-3 px-2">
         <AppIcon />
         <div className="leading-tight">
@@ -94,7 +46,7 @@ export function Sidebar({ view, onNavigate, theme, onThemeChange }) {
               key={id}
               onClick={() => onNavigate(id)}
               className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-[14px] transition ${
-                active ? 'bg-ink/[0.07] font-semibold text-slate-900' : 'font-medium text-slate-700 hover:bg-ink/[0.04]'
+                active ? 'bg-white/80 font-semibold text-blue-700 shadow-sm shadow-slate-900/[0.04] ring-1 ring-white' : 'font-medium text-slate-700 hover:bg-white/50'
               }`}
             >
               <Icon className="h-[18px] w-[18px] text-blue-600" strokeWidth={active ? 2.25 : 1.9} />
@@ -104,10 +56,7 @@ export function Sidebar({ view, onNavigate, theme, onThemeChange }) {
         })}
       </nav>
 
-      <div className="mt-auto space-y-1.5 px-1 pb-3">
-        <p className="px-2 text-[11px] font-semibold text-slate-500">Apariencia</p>
-        <ThemeSwitcher theme={theme} onChange={onThemeChange} />
-      </div>
+      <div className="mt-auto" />
 
       <SyncCard onResetDemo={reset} />
     </aside>
@@ -118,7 +67,7 @@ export function WeekPicker({ week, onChange }) {
   const current = currentWeekISO()
   const isCurrent = week === current
   return (
-    <div className="flex items-center gap-0.5 rounded-full bg-ink/[0.05] p-1">
+    <div className="flex items-center gap-0.5 rounded-full border border-white/80 bg-white/55 p-1 shadow-sm shadow-slate-900/[0.04] backdrop-blur-xl">
       <button
         onClick={() => onChange(addWeeks(week, -1))}
         className="flex h-7 w-7 items-center justify-center rounded-full text-slate-600 transition hover:bg-surface hover:shadow-sm"
@@ -150,10 +99,10 @@ export function WeekPicker({ week, onChange }) {
 }
 
 /** Encabezado con "Large Title" y barra translúcida. */
-export function Topbar({ view, week, onWeekChange, theme, onThemeChange }) {
+export function Topbar({ view, week, onWeekChange }) {
   const meta = NAV_ITEMS.find((n) => n.id === view) ?? NAV_ITEMS[0]
   return (
-    <header className="glass sticky top-0 z-20 border-b border-slate-200/80">
+    <header className="glass sticky top-0 z-20 border-b">
       <div className="mx-auto flex max-w-[1600px] flex-wrap items-end justify-between gap-3 px-4 pb-3 pt-4 sm:px-6 lg:px-10 lg:pt-6">
         <div className="min-w-0">
           <p className="mb-0.5 flex items-center gap-1.5 text-[13px] font-medium text-slate-600 lg:hidden">
@@ -165,7 +114,6 @@ export function Topbar({ view, week, onWeekChange, theme, onThemeChange }) {
         <div className="flex items-center gap-2">
           <SyncPill />
           <WeekPicker week={week} onChange={onWeekChange} />
-          <ThemeCycleButton theme={theme} onChange={onThemeChange} />
         </div>
       </div>
     </header>
@@ -175,7 +123,7 @@ export function Topbar({ view, week, onWeekChange, theme, onThemeChange }) {
 /** Tab bar inferior estilo iOS (solo móvil/tablet). */
 export function TabBar({ view, onNavigate }) {
   return (
-    <nav className="glass fixed inset-x-0 bottom-0 z-30 flex border-t border-slate-200 pb-[env(safe-area-inset-bottom)] lg:hidden">
+    <nav className="glass fixed inset-x-0 bottom-0 z-30 flex border-t border-white/70 pb-[env(safe-area-inset-bottom)] lg:hidden">
       {NAV_ITEMS.map(({ id, label, icon: Icon }) => {
         const active = view === id
         return (

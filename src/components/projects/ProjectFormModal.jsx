@@ -78,7 +78,7 @@ export default function ProjectFormModal({ open, onClose, project, onSaved }) {
       }
     >
       <form id="project-form" onSubmit={submit} className="space-y-5">
-        <div className="flex items-center gap-3 rounded-xl border border-slate-200/80 bg-slate-50 p-4">
+        <div className="flex items-center gap-3 rounded-xl border border-white/80 bg-white/60 p-4">
           <span className={`h-3 w-3 shrink-0 rounded-sm ${COLOR_CLASSES[form.color] ?? 'bg-slate-400'}`} />
           <span className="font-mono text-sm font-semibold text-slate-700">{code || suggestCode(name) || 'CÓDIGO'}</span>
           <span className="text-slate-400">·</span>
@@ -122,7 +122,7 @@ export default function ProjectFormModal({ open, onClose, project, onSaved }) {
                 aria-checked={form.color === c}
                 aria-label={c}
                 onClick={() => setForm((f) => ({ ...f, color: c }))}
-                className={`flex h-8 w-8 items-center justify-center rounded-lg ${COLOR_CLASSES[c]} ring-offset-2 ring-offset-surface transition ${
+                className={`flex h-8 w-8 items-center justify-center rounded-lg ${COLOR_CLASSES[c]} ring-offset-2 ring-offset-white transition ${
                   form.color === c ? 'ring-2 ring-slate-900' : 'hover:scale-110'
                 }`}
               >

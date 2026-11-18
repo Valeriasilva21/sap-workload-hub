@@ -119,7 +119,7 @@ export default function ProjectsView({ week }) {
                       <p className="text-slate-500">Estado</p>
                       <p className="mt-0.5 text-sm">
                         {row.blocked > 0 ? (
-                          <span className="badge bg-red-50 font-semibold text-red-700 ring-red-600/30">
+                          <span className="badge bg-rose-500/15 font-semibold text-red-700 ring-rose-500/30">
                             <span className="font-mono">{row.blocked}</span> bloq.
                           </span>
                         ) : (
@@ -137,7 +137,7 @@ export default function ProjectsView({ week }) {
                     </button>
                     <button
                       onClick={() => remove(row)}
-                      className="btn-ghost p-2 hover:bg-red-50 hover:text-red-600"
+                      className="btn-ghost p-2 hover:bg-rose-500/15 hover:text-red-600"
                       aria-label={`Eliminar ${p.name}`}
                       title="Eliminar proyecto"
                     >

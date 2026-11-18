@@ -74,7 +74,7 @@ export default function MemberFormModal({ open, onClose, member, onSaved }) {
       }
     >
       <form id="member-form" onSubmit={submit} className="space-y-5">
-        <div className="flex items-center gap-4 rounded-xl border border-slate-200/80 bg-slate-50 p-4">
+        <div className="flex items-center gap-4 rounded-xl border border-white/80 bg-white/60 p-4">
           <Avatar member={{ name: name || '?', color: form.color }} size="lg" />
           <div className="min-w-0">
             <p className="truncate font-semibold text-slate-900">{name || 'Nombre del integrante'}</p>
@@ -110,7 +110,7 @@ export default function MemberFormModal({ open, onClose, member, onSaved }) {
                 aria-checked={form.level === l.id}
                 onClick={() => set('level')(l.id)}
                 className={`rounded-full border px-3 py-1 text-sm font-medium ${
-                  form.level === l.id ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-200 bg-surface text-slate-700 hover:border-slate-300'
+                  form.level === l.id ? 'border-transparent bg-gradient-to-b from-blue-500 to-indigo-600 text-white shadow-sm shadow-blue-600/25' : 'border-white/80 bg-white/70 text-slate-700 hover:bg-white'
                 }`}
               >
                 {l.label}
@@ -144,7 +144,7 @@ export default function MemberFormModal({ open, onClose, member, onSaved }) {
                 type="button"
                 onClick={() => set('capacity')(h)}
                 className={`mono rounded-full border px-3 py-1 text-sm font-medium ${
-                  capacity === h ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-200 bg-surface text-slate-700 hover:border-slate-300'
+                  capacity === h ? 'border-transparent bg-gradient-to-b from-blue-500 to-indigo-600 text-white shadow-sm shadow-blue-600/25' : 'border-white/80 bg-white/70 text-slate-700 hover:bg-white'
                 }`}
               >
                 {h} h
@@ -176,7 +176,7 @@ export default function MemberFormModal({ open, onClose, member, onSaved }) {
                 aria-checked={form.color === c}
                 aria-label={c}
                 onClick={() => set('color')(c)}
-                className={`flex h-8 w-8 items-center justify-center rounded-full ${COLOR_CLASSES[c]} ring-offset-2 ring-offset-surface transition ${
+                className={`flex h-8 w-8 items-center justify-center rounded-full ${COLOR_CLASSES[c]} ring-offset-2 ring-offset-white transition ${
                   form.color === c ? 'ring-2 ring-slate-900' : 'hover:scale-110'
                 }`}
               >

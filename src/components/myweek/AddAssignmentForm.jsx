@@ -146,7 +146,7 @@ export default function AddAssignmentForm({ member, week, onDone, onCancel }) {
                     setMode(k)
                     setAmount(k === 'hours' ? 8 : 25)
                   }}
-                  className={`rounded-[7px] px-3 py-1 ${mode === k ? 'bg-surface font-semibold text-slate-900 shadow-[0_1px_3px_rgba(0,0,0,0.12)] dark:bg-slate-400' : 'text-slate-600'}`}
+                  className={`rounded-[7px] px-3 py-1 ${mode === k ? 'bg-white font-semibold text-blue-700 shadow-[0_1px_3px_rgba(15,23,42,0.12)]' : 'text-slate-600'}`}
                 >
                   {label}
                 </button>
@@ -160,7 +160,7 @@ export default function AddAssignmentForm({ member, week, onDone, onCancel }) {
                 type="button"
                 onClick={() => setAmount(v)}
                 className={`rounded-full border px-3 py-1 text-sm font-medium ${
-                  Number(amount) === v ? 'border-transparent bg-blue-600 text-white' : 'border-transparent bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  Number(amount) === v ? 'border-transparent bg-gradient-to-b from-blue-500 to-indigo-600 text-white shadow-sm shadow-blue-600/25' : 'border-white/80 bg-white/70 text-slate-700 hover:bg-white'
                 }`}
               >
                 {v}

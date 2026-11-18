@@ -8,8 +8,8 @@ const scale = (name) => Object.fromEntries(SHADES.map((k) => [k, `rgb(var(--${na
 
 export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
-  // Oscuro automático según el sistema; la clase .light / .dark en <html> lo fuerza.
-  darkMode: ['variant', ['@media (prefers-color-scheme: dark) { &:not(.light *) }', '&:is(.dark *)']],
+  // Tema único claro (Light Glass): las variantes dark: quedan inactivas.
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {

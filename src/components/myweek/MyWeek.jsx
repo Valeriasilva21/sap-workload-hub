@@ -18,7 +18,7 @@ function MemberSwitcher({ members, value, onChange }) {
           className={`flex shrink-0 items-center gap-2 rounded-full border py-1 pl-1 pr-3 text-sm font-medium transition ${
             m.id === value
               ? 'border-transparent bg-blue-600 text-white shadow-[0_2px_8px_rgba(0,122,255,0.35)]'
-              : 'border-slate-200/80 bg-surface text-slate-700 hover:border-slate-300'
+              : 'border-white/80 bg-white/70 text-slate-700 shadow-sm shadow-slate-900/[0.03] backdrop-blur hover:bg-white'
           }`}
         >
           <Avatar member={m} size="sm" />

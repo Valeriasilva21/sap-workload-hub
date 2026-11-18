@@ -72,7 +72,7 @@ export function SemaphoreLegend() {
 
 export function BlockedBadge({ days }) {
   return (
-    <span className="badge bg-red-50 font-semibold text-red-700 ring-red-600/30">
+    <span className="badge bg-rose-500/15 font-semibold text-red-700 ring-rose-500/30">
       <Ban className="h-3 w-3" />
       Bloqueado
       {days != null && <span className="font-mono font-medium">· {days}d</span>}
@@ -82,7 +82,7 @@ export function BlockedBadge({ days }) {
 
 /** Días detenido ("6 días"): rojo desde 5 días, ámbar antes. */
 export function DaysBadge({ days, icon: Icon }) {
-  const tone = days >= 5 ? 'bg-red-50 text-red-700 ring-red-600/30' : 'bg-amber-50 text-amber-800 ring-amber-600/30'
+  const tone = days >= 5 ? 'bg-rose-500/15 text-red-700 ring-rose-500/30' : 'bg-amber-500/15 text-amber-800 ring-amber-500/30'
   return (
     <span className={`badge font-mono font-semibold ${tone}`}>
       {Icon && <Icon className="h-3 w-3" />}
@@ -93,7 +93,7 @@ export function DaysBadge({ days, icon: Icon }) {
 
 export function RiskBadge() {
   return (
-    <span className="badge bg-amber-50 font-semibold text-amber-800 ring-amber-600/30">
+    <span className="badge bg-amber-500/15 font-semibold text-amber-800 ring-amber-500/30">
       <TriangleAlert className="h-3 w-3" />
       En riesgo
     </span>
@@ -102,7 +102,7 @@ export function RiskBadge() {
 
 export function DoneBadge() {
   return (
-    <span className="badge bg-emerald-50 font-semibold text-emerald-700 ring-emerald-600/30">
+    <span className="badge bg-emerald-500/15 font-semibold text-emerald-700 ring-emerald-500/30">
       <CircleCheck className="h-3 w-3" />
       Completada
     </span>

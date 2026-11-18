@@ -25,7 +25,7 @@ function MemberRow({ member, week, onEdit, onToast }) {
   }
 
   return (
-    <li className={`flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center ${active ? '' : 'bg-slate-50'}`}>
+    <li className={`flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center ${active ? '' : 'bg-slate-500/[0.04]'}`}>
       <div className={`flex min-w-0 flex-1 items-center gap-3 ${active ? '' : 'opacity-60'}`}>
         <Avatar member={member} size="lg" />
         <div className="min-w-0 cursor-pointer" onClick={() => onEdit(member)} title="Editar integrante">
@@ -90,7 +90,7 @@ function MemberRow({ member, week, onEdit, onToast }) {
           </button>
           <button
             onClick={remove}
-            className="btn-ghost p-2 hover:bg-red-50 hover:text-red-600"
+            className="btn-ghost p-2 hover:bg-rose-500/15 hover:text-red-600"
             aria-label={`Eliminar ${member.name}`}
             title="Eliminar"
           >
@@ -177,7 +177,7 @@ export default function TeamView({ week }) {
             : 'Los datos se guardan en este navegador. Úsalo para preparar el equipo antes de empezar a registrar trabajo real.'}
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-xl border border-slate-200/80 p-4">
+          <div className="rounded-2xl border border-white/80 bg-white/50 p-4">
             <p className="flex items-center gap-2 text-sm font-semibold text-slate-900">
               <Eraser className="h-4 w-4 text-slate-500" /> Empezar desde cero
             </p>
@@ -188,7 +188,7 @@ export default function TeamView({ week }) {
               Vaciar proyectos y horas
             </button>
           </div>
-          <div className="rounded-xl border border-slate-200/80 p-4">
+          <div className="rounded-2xl border border-white/80 bg-white/50 p-4">
             <p className="flex items-center gap-2 text-sm font-semibold text-slate-900">
               <RotateCcw className="h-4 w-4 text-slate-500" /> Restaurar demo
             </p>

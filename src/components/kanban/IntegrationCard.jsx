@@ -25,8 +25,8 @@ export default function IntegrationCard({ integration: i, project, owner, hours,
       tabIndex={0}
       role="button"
       aria-label={`Editar ${i.name}`}
-      className={`group cursor-grab rounded-xl border bg-surface p-3.5 transition hover:shadow-sm focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/25 active:cursor-grabbing ${
-        i.blocked ? 'border-red-300' : 'border-slate-200/80 hover:border-slate-300'
+      className={`group card-hover cursor-grab rounded-2xl border bg-white/85 p-3.5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/25 active:cursor-grabbing ${
+        i.blocked ? 'border-rose-300/70' : 'border-white/80'
       }`}
     >
       <div className="flex items-start justify-between gap-2">
@@ -56,7 +56,7 @@ export default function IntegrationCard({ integration: i, project, owner, hours,
           <Avatar member={owner} size="sm" />
           <span className="truncate">{owner?.name.split(' ')[0] ?? 'Sin asignar'}</span>
         </span>
-        <span className="badge mono bg-slate-50 text-slate-700 ring-slate-200">
+        <span className="badge mono bg-slate-500/10 text-slate-700 ring-slate-500/15">
           <Clock className="h-3 w-3" />
           {hours} h/sem
         </span>

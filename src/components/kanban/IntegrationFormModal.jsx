@@ -159,7 +159,7 @@ export default function IntegrationFormModal({ open, onClose, integration, defau
         </Field>
 
         {isEdit ? (
-          <div className="rounded-2xl bg-slate-50 p-3.5 sm:col-span-2">
+          <div className="rounded-2xl border border-white/80 bg-white/50 p-3.5 sm:col-span-2">
             <p className="label">Dedicación registrada esta semana</p>
             {weekAllocs.length === 0 ? (
               <p className="text-xs text-slate-600">Nadie ha registrado horas esta semana. Se cargan desde “Mi Semana”.</p>
@@ -189,7 +189,7 @@ export default function IntegrationFormModal({ open, onClose, integration, defau
         )}
 
         <div
-          className={`rounded-2xl p-3.5 sm:col-span-2 ${form.blocked ? 'bg-red-50' : 'bg-slate-50'}`}
+          className={`rounded-2xl p-3.5 sm:col-span-2 ${form.blocked ? 'border border-rose-500/20 bg-rose-500/[0.07]' : 'border border-white/80 bg-white/50'}`}
         >
           <div className="flex items-center justify-between gap-3">
             <div>
@@ -204,7 +204,7 @@ export default function IntegrationFormModal({ open, onClose, integration, defau
           </div>
           {form.blocked && (
             <input
-              className="input mt-3 bg-surface"
+              className="input mt-3"
               autoFocus
               maxLength={140}
               placeholder="Ej: Falta conectividad VPN con proveedor"

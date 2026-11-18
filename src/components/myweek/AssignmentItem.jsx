@@ -19,10 +19,10 @@ function StageStepper({ value, onChange }) {
           onClick={() => onChange(s.id)}
           className={`truncate rounded-[8px] px-1 py-1.5 text-[11px] font-medium transition sm:text-[13px] ${
             k === current
-              ? 'bg-surface font-semibold text-slate-900 shadow-[0_1px_3px_rgba(0,0,0,0.12)] dark:bg-slate-400'
+              ? 'bg-white font-semibold text-blue-700 shadow-[0_1px_3px_rgba(15,23,42,0.12)]'
               : k < current
-                ? 'text-blue-600 hover:bg-surface/60'
-                : 'text-slate-600 hover:bg-surface/60'
+                ? 'text-blue-600 hover:bg-white/60'
+                : 'text-slate-600 hover:bg-white/60'
           }`}
         >
           {s.short}
@@ -40,7 +40,7 @@ export default function AssignmentItem({ allocation, integration: i, project, me
   const setHours = (h) => actions.updateAllocation(allocation.id, { hours: Math.max(0, Math.min(80, h)) })
 
   return (
-    <article className={`card overflow-hidden ${i.blocked ? 'ring-2 ring-red-400/70' : ''}`}>
+    <article className={`card overflow-hidden ${i.blocked ? 'ring-2 ring-rose-400/50' : ''}`}>
       <div className="flex flex-wrap items-start justify-between gap-3 p-4 pb-3">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
@@ -51,7 +51,7 @@ export default function AssignmentItem({ allocation, integration: i, project, me
           {i.systems && <p className="text-xs text-slate-600">{i.systems}</p>}
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center rounded-full bg-slate-100">
+          <div className="flex items-center rounded-full border border-white/80 bg-white/70 shadow-sm shadow-slate-900/[0.03]">
             <button className="px-2 py-1.5 text-slate-600 hover:text-slate-900" onClick={() => setHours(hours - 1)} aria-label="Restar hora">
               <Minus className="h-3.5 w-3.5" />
             </button>
@@ -74,7 +74,7 @@ export default function AssignmentItem({ allocation, integration: i, project, me
             <span className="font-medium text-slate-800"><span className="mono">{pct}%</span> ded.</span>
           </span>
           <button
-            className="rounded-md p-1.5 text-slate-500 hover:bg-red-50 hover:text-red-600"
+            className="rounded-md p-1.5 text-slate-500 hover:bg-rose-500/15 hover:text-red-600"
             onClick={() => actions.deleteAllocation(allocation.id)}
             aria-label="Quitar de mi semana"
             title="Quitar de mi semana"
@@ -102,7 +102,7 @@ export default function AssignmentItem({ allocation, integration: i, project, me
         </div>
       </div>
 
-      <div className={`border-t px-4 py-3 ${i.blocked ? 'border-red-100 bg-red-50' : 'border-slate-200/80 bg-slate-50'}`}>
+      <div className={`border-t px-4 py-3 ${i.blocked ? 'border-rose-500/15 bg-rose-500/[0.07]' : 'border-white/70 bg-white/40'}`}>
         <div className="flex items-center justify-between gap-3">
           <span className={`flex items-center gap-2 text-sm font-medium ${i.blocked ? 'text-red-700' : 'text-slate-600'}`}>
             <OctagonAlert className="h-4 w-4" /> ¿Tienes algún bloqueo?
@@ -112,7 +112,7 @@ export default function AssignmentItem({ allocation, integration: i, project, me
         {i.blocked && (
           <div className="mt-2">
             <input
-              className="input bg-surface"
+              className="input"
               maxLength={140}
               placeholder="Ej: Falta conectividad VPN con proveedor"
               value={i.blockReason}

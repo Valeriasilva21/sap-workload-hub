@@ -67,8 +67,8 @@ export default function KanbanBoard({ week }) {
                 if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(null)
               }}
               onDrop={(e) => onDrop(e, stage.id)}
-              className={`flex w-[82vw] shrink-0 snap-start flex-col rounded-xl border transition sm:w-72 2xl:w-auto 2xl:min-w-0 2xl:flex-1 ${
-                isOver ? 'border-blue-400 bg-blue-50' : 'border-slate-200/80 bg-slate-100/60'
+              className={`flex w-[82vw] shrink-0 snap-start flex-col rounded-2xl border backdrop-blur-md transition sm:w-72 2xl:w-auto 2xl:min-w-0 2xl:flex-1 ${
+                isOver ? 'border-blue-400/70 bg-blue-500/10' : 'border-white/60 bg-white/40'
               }`}
             >
               <header className="px-3 pb-2 pt-3">
@@ -79,7 +79,7 @@ export default function KanbanBoard({ week }) {
                       <span className="font-mono text-slate-600">{idx + 1}.</span> {stage.label}
                     </h2>
                   </div>
-                  <span className="mono flex h-6 min-w-6 items-center justify-center rounded-md border border-slate-200/80 bg-surface px-1.5 text-xs font-semibold text-slate-700">{items.length}</span>
+                  <span className="mono flex h-6 min-w-6 items-center justify-center rounded-full border border-white/80 bg-white/80 px-2 text-xs font-semibold text-slate-700">{items.length}</span>
                 </div>
                 <div className="mt-1 flex items-center justify-between pl-[18px] text-[11px] text-slate-600">
                   <span className="truncate">{stage.hint}</span>
@@ -100,13 +100,13 @@ export default function KanbanBoard({ week }) {
                   />
                 ))}
                 {items.length === 0 && (
-                  <p className="rounded-2xl border-2 border-dashed border-slate-300 py-6 text-center text-xs text-slate-500">
+                  <p className="rounded-2xl border-2 border-dashed border-slate-300/70 py-6 text-center text-xs text-slate-500">
                     Arrastra una tarjeta aquí
                   </p>
                 )}
                 <button
                   onClick={() => setModal({ stage: stage.id })}
-                  className="mt-auto flex items-center justify-center gap-1 rounded-full py-2 text-[13px] font-medium text-blue-600 hover:bg-surface"
+                  className="mt-auto flex items-center justify-center gap-1 rounded-full py-2 text-[13px] font-medium text-blue-600 hover:bg-white/70"
                 >
                   <Plus className="h-3.5 w-3.5" /> Añadir
                 </button>

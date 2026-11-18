@@ -46,8 +46,8 @@ export default function Dashboard({ week, onOpenMember, onNavigate }) {
           tone={kpis.blocked.length ? 'red' : kpis.risk.length ? 'amber' : 'green'}
         >
           <div className="flex flex-wrap gap-1.5 text-xs font-medium">
-            <span className="badge bg-red-50 px-2 py-1 text-xs text-red-700 ring-red-600/30"><span className="font-mono font-semibold">{kpis.blocked.length}</span> bloqueadas</span>
-            <span className="badge bg-amber-50 px-2 py-1 text-xs text-amber-800 ring-amber-600/30"><span className="font-mono font-semibold">{kpis.risk.length}</span> en riesgo por fecha</span>
+            <span className="badge bg-rose-500/15 px-2 py-1 text-xs text-red-700 ring-rose-500/30"><span className="font-mono font-semibold">{kpis.blocked.length}</span> bloqueadas</span>
+            <span className="badge bg-amber-500/15 px-2 py-1 text-xs text-amber-800 ring-amber-500/30"><span className="font-mono font-semibold">{kpis.risk.length}</span> en riesgo por fecha</span>
           </div>
         </KpiCard>
 

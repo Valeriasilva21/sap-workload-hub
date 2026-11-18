@@ -2,8 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Tema "Light Glass": superficies de cristal claro sobre un lienzo luminoso.
+ * Los colores viven como variables para que Tailwind los use con opacidad (bg-blue-600/20, etc.).
+ * `red` usa la escala rose (sobrecarga y bloqueos en tono pastel, no rojo chillón).
+ */
 @layer base {
-  /* Tokens de color y tipografía. Claro por defecto. */
   :root {
     --slate-50: 248 250 252;
     --slate-100: 241 245 249;
@@ -15,188 +19,79 @@
     --slate-700: 51 65 85;
     --slate-800: 30 41 59;
     --slate-900: 15 23 42;
-    --blue-50: 238 245 255;
-    --blue-100: 220 235 255;
-    --blue-200: 184 215 255;
-    --blue-300: 138 192 255;
-    --blue-400: 77 162 255;
-    --blue-500: 43 140 255;
-    --blue-600: 0 122 255;
-    --blue-700: 0 113 227;
-    --blue-800: 0 98 196;
-    --blue-900: 0 74 153;
-    --emerald-50: 238 251 242;
-    --emerald-100: 214 245 223;
-    --emerald-200: 174 235 192;
-    --emerald-300: 126 221 155;
-    --emerald-400: 79 208 115;
-    --emerald-500: 52 199 89;
-    --emerald-600: 45 176 79;
-    --emerald-700: 36 138 61;
-    --emerald-800: 28 107 48;
-    --emerald-900: 21 82 36;
-    --amber-50: 255 248 235;
-    --amber-100: 255 237 199;
-    --amber-200: 255 220 143;
-    --amber-300: 255 200 87;
-    --amber-400: 255 176 31;
-    --amber-500: 255 159 10;
-    --amber-600: 230 138 0;
-    --amber-700: 179 107 0;
-    --amber-800: 138 82 0;
-    --amber-900: 102 61 0;
-    --red-50: 255 241 240;
-    --red-100: 255 224 222;
-    --red-200: 255 194 190;
-    --red-300: 255 152 144;
-    --red-400: 255 106 96;
-    --red-500: 255 59 48;
-    --red-600: 229 53 43;
-    --red-700: 196 43 34;
-    --red-800: 158 34 27;
-    --red-900: 122 26 21;
+    --blue-50: 239 246 255;
+    --blue-100: 219 234 254;
+    --blue-200: 191 219 254;
+    --blue-300: 147 197 253;
+    --blue-400: 96 165 250;
+    --blue-500: 59 130 246;
+    --blue-600: 37 99 235;
+    --blue-700: 29 78 216;
+    --blue-800: 30 64 175;
+    --blue-900: 30 58 138;
+    --emerald-50: 236 253 245;
+    --emerald-100: 209 250 229;
+    --emerald-200: 167 243 208;
+    --emerald-300: 110 231 183;
+    --emerald-400: 52 211 153;
+    --emerald-500: 16 185 129;
+    --emerald-600: 5 150 105;
+    --emerald-700: 4 120 87;
+    --emerald-800: 6 95 70;
+    --emerald-900: 6 78 59;
+    --amber-50: 255 251 235;
+    --amber-100: 254 243 199;
+    --amber-200: 253 230 138;
+    --amber-300: 252 211 77;
+    --amber-400: 251 191 36;
+    --amber-500: 245 158 11;
+    --amber-600: 217 119 6;
+    --amber-700: 180 83 9;
+    --amber-800: 146 64 14;
+    --amber-900: 120 53 15;
+    --red-50: 255 241 242;
+    --red-100: 255 228 230;
+    --red-200: 254 205 211;
+    --red-300: 253 164 175;
+    --red-400: 251 113 133;
+    --red-500: 244 63 94;
+    --red-600: 225 29 72;
+    --red-700: 190 18 60;
+    --red-800: 159 18 57;
+    --red-900: 136 19 55;
     --surface: 255 255 255;
+    --ink: 15 23 42;
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    --ink: 0 0 0;
+    --glass-shadow: 0 8px 30px rgb(15 23 42 / 0.04), 0 1px 2px rgb(15 23 42 / 0.03);
+    --glass-shadow-hover: 0 14px 40px rgb(15 23 42 / 0.08), 0 2px 4px rgb(15 23 42 / 0.04);
     color-scheme: light;
-  }
-  /* Oscuro: automático según el sistema, o forzado con la clase .dark */
-  @media (prefers-color-scheme: dark) {
-    :root:not(.light) {
-      --slate-50: 2 6 23;
-      --slate-100: 30 41 59;
-      --slate-200: 51 65 85;
-      --slate-300: 71 85 105;
-      --slate-400: 100 116 139;
-      --slate-500: 148 163 184;
-      --slate-600: 176 189 206;
-      --slate-700: 203 213 225;
-      --slate-800: 226 232 240;
-      --slate-900: 241 245 249;
-      --blue-50: 12 36 66;
-      --blue-100: 14 50 92;
-      --blue-200: 22 74 138;
-      --blue-300: 40 110 200;
-      --blue-400: 64 156 255;
-      --blue-500: 10 132 255;
-      --blue-600: 10 132 255;
-      --blue-700: 90 170 255;
-      --blue-800: 130 190 255;
-      --blue-900: 175 213 255;
-      --emerald-50: 13 44 23;
-      --emerald-100: 17 62 31;
-      --emerald-200: 26 92 46;
-      --emerald-300: 36 130 64;
-      --emerald-400: 70 210 110;
-      --emerald-500: 48 209 88;
-      --emerald-600: 48 209 88;
-      --emerald-700: 95 222 128;
-      --emerald-800: 135 232 162;
-      --emerald-900: 180 242 198;
-      --amber-50: 54 37 8;
-      --amber-100: 74 50 10;
-      --amber-200: 105 72 14;
-      --amber-300: 150 100 20;
-      --amber-400: 255 190 60;
-      --amber-500: 255 159 10;
-      --amber-600: 255 170 40;
-      --amber-700: 255 192 85;
-      --amber-800: 255 208 125;
-      --amber-900: 255 226 172;
-      --red-50: 56 19 17;
-      --red-100: 80 25 22;
-      --red-200: 110 34 30;
-      --red-300: 160 50 44;
-      --red-400: 255 105 97;
-      --red-500: 255 69 58;
-      --red-600: 255 69 58;
-      --red-700: 255 122 114;
-      --red-800: 255 157 150;
-      --red-900: 255 192 187;
-      --surface: 15 23 42;
-      --ink: 255 255 255;
-      color-scheme: dark;
-    }
-  }
-  :root.dark {
-    --slate-50: 2 6 23;
-    --slate-100: 30 41 59;
-    --slate-200: 51 65 85;
-    --slate-300: 71 85 105;
-    --slate-400: 100 116 139;
-    --slate-500: 148 163 184;
-    --slate-600: 176 189 206;
-    --slate-700: 203 213 225;
-    --slate-800: 226 232 240;
-    --slate-900: 241 245 249;
-    --blue-50: 12 36 66;
-    --blue-100: 14 50 92;
-    --blue-200: 22 74 138;
-    --blue-300: 40 110 200;
-    --blue-400: 64 156 255;
-    --blue-500: 10 132 255;
-    --blue-600: 10 132 255;
-    --blue-700: 90 170 255;
-    --blue-800: 130 190 255;
-    --blue-900: 175 213 255;
-    --emerald-50: 13 44 23;
-    --emerald-100: 17 62 31;
-    --emerald-200: 26 92 46;
-    --emerald-300: 36 130 64;
-    --emerald-400: 70 210 110;
-    --emerald-500: 48 209 88;
-    --emerald-600: 48 209 88;
-    --emerald-700: 95 222 128;
-    --emerald-800: 135 232 162;
-    --emerald-900: 180 242 198;
-    --amber-50: 54 37 8;
-    --amber-100: 74 50 10;
-    --amber-200: 105 72 14;
-    --amber-300: 150 100 20;
-    --amber-400: 255 190 60;
-    --amber-500: 255 159 10;
-    --amber-600: 255 170 40;
-    --amber-700: 255 192 85;
-    --amber-800: 255 208 125;
-    --amber-900: 255 226 172;
-    --red-50: 56 19 17;
-    --red-100: 80 25 22;
-    --red-200: 110 34 30;
-    --red-300: 160 50 44;
-    --red-400: 255 105 97;
-    --red-500: 255 69 58;
-    --red-600: 255 69 58;
-    --red-700: 255 122 114;
-    --red-800: 255 157 150;
-    --red-900: 255 192 187;
-    --surface: 15 23 42;
-    --ink: 255 255 255;
-    color-scheme: dark;
   }
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  /* Lienzo: degradado mesh perla / azul hielo / índigo pastel / cian claro */
   body {
-    @apply bg-slate-50 font-sans text-slate-900;
+    @apply font-sans text-slate-900;
     font-feature-settings: 'cv11', 'ss01';
+    background-color: #f8fafc;
+    background-image:
+      radial-gradient(at 0% 0%, #eff6ff 0px, transparent 55%),
+      radial-gradient(at 100% 0%, #eef2ff 0px, transparent 50%),
+      radial-gradient(at 100% 100%, #ecfeff 0px, transparent 55%),
+      radial-gradient(at 0% 100%, #f5f3ff 0px, transparent 50%);
+    background-attachment: fixed;
+    min-height: 100vh;
   }
-  /* Títulos: compactos y editoriales */
   h1,
   h2,
   h3 {
-    @apply font-semibold;
+    @apply font-semibold text-slate-900;
     letter-spacing: -0.02em;
   }
   h1 {
     @apply font-bold;
-  }
-  /* Transición suave al cambiar de tema */
-  body,
-  .card,
-  .glass {
-    transition: background-color 0.25s ease, color 0.25s ease;
   }
   ::selection {
     @apply bg-blue-200;
@@ -204,44 +99,60 @@
 }
 
 @layer components {
-  /* Campo estilo iOS: relleno gris, sin borde, foco con anillo azul */
+  /* Cristal: tarjetas, paneles y barras */
+  .glass-panel {
+    @apply border border-white/80 bg-white/65 backdrop-blur-xl backdrop-saturate-150;
+    box-shadow: var(--glass-shadow);
+  }
+  .card {
+    @apply glass-panel rounded-2xl;
+  }
+  /* Tarjeta que reacciona al pasar el mouse (KPIs, tarjetas del Kanban) */
+  .card-hover {
+    @apply transition duration-200 hover:bg-white/90;
+  }
+  .card-hover:hover {
+    box-shadow: var(--glass-shadow-hover);
+  }
+  /* Barras laterales y superiores */
+  .glass {
+    @apply border-white/70 bg-white/55 backdrop-blur-xl backdrop-saturate-150;
+  }
+
   .input {
-    @apply w-full rounded-xl border border-transparent bg-slate-100 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-500 transition focus:border-blue-500 focus:bg-surface focus:outline-none focus:ring-4 focus:ring-blue-500/15 disabled:opacity-60;
+    @apply w-full rounded-xl border border-slate-200/70 bg-white/80 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm shadow-slate-900/[0.02] transition focus:border-blue-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 disabled:opacity-60;
   }
   select.input {
     @apply cursor-pointer appearance-none bg-no-repeat pr-9;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%238E8E93'%3E%3Cpath d='M6.3 7.3a1 1 0 0 1 1.4 0L10 9.6l2.3-2.3a1 1 0 1 1 1.4 1.4l-3 3a1 1 0 0 1-1.4 0l-3-3a1 1 0 0 1 0-1.4Z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2364748B'%3E%3Cpath d='M6.3 7.3a1 1 0 0 1 1.4 0L10 9.6l2.3-2.3a1 1 0 1 1 1.4 1.4l-3 3a1 1 0 0 1-1.4 0l-3-3a1 1 0 0 1 0-1.4Z'/%3E%3C/svg%3E");
     background-position: right 0.7rem center;
     background-size: 1.1rem;
   }
+
   .btn {
-    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition active:scale-[0.97] focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/25 disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100;
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100;
   }
+  /* Primario: azul → índigo con un brillo sutil */
   .btn-primary {
-    @apply btn bg-blue-600 text-white hover:bg-blue-700;
+    @apply btn bg-gradient-to-b from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-600/25 ring-1 ring-inset ring-white/20 hover:from-blue-600 hover:to-indigo-700 hover:shadow-blue-600/35;
   }
   .btn-secondary {
-    @apply btn bg-slate-100 text-blue-600 hover:bg-slate-200;
+    @apply btn border border-white/80 bg-white/70 text-blue-700 shadow-sm shadow-slate-900/[0.03] backdrop-blur hover:bg-white;
   }
   .btn-ghost {
-    @apply btn text-slate-600 hover:bg-slate-100;
+    @apply btn text-slate-600 hover:bg-white/70;
   }
   .btn-danger {
-    @apply btn text-red-500 hover:bg-red-50;
+    @apply btn text-rose-600 hover:bg-rose-500/10;
   }
-  /* Tarjeta: borde fino y nítido en lugar de sombra difusa */
-  .card {
-    @apply rounded-xl border border-slate-200/80 bg-surface;
-  }
+
   .label {
     @apply mb-1.5 block text-xs font-medium text-slate-600;
   }
-  /* Métricas grandes (KPIs) */
   .metric {
-    @apply font-sans font-bold tabular-nums;
+    @apply font-sans font-bold tabular-nums text-slate-900;
     letter-spacing: -0.03em;
   }
-  /* Datos técnicos: horas, porcentajes, códigos. `.mono-sm` reduce al 85 % del texto que lo rodea. */
   .mono {
     @apply font-mono tabular-nums;
     letter-spacing: -0.01em;
@@ -250,18 +161,14 @@
     @apply mono;
     font-size: 0.85em;
   }
-  /* Badge con borde a juego con su fondo */
+  /* Badge: píldora de cristal tintado con borde a juego */
   .badge {
-    @apply inline-flex shrink-0 items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium ring-1 ring-inset;
-  }
-  /* Material translúcido (vibrancy) */
-  .glass {
-    @apply bg-surface/70 backdrop-blur-2xl backdrop-saturate-150;
+    @apply inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ring-inset backdrop-blur-sm;
   }
 }
 
-/* Scrollbars discretas estilo macOS */
+/* Scrollbars discretas */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
+  scrollbar-color: rgb(100 116 139 / 0.3) transparent;
 }
