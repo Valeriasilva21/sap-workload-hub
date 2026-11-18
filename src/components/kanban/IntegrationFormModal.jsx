@@ -3,10 +3,11 @@ import { MessageSquare, Paperclip, Trash2 } from 'lucide-react'
 import { useStore } from '../../store/useStore'
 import { STAGES, TECHNOLOGIES } from '../../lib/constants'
 import { blockedDays } from '../../lib/selectors'
-import { Avatar, Field, Modal, Toggle } from '../ui/Primitives'
+import { Field, Modal, Toggle } from '../ui/Primitives'
 import ProjectSelect from '../ui/ProjectSelect'
 import AttachmentsPanel from '../attachments/AttachmentsPanel'
 import CommentsPanel from '../comments/CommentsPanel'
+import WeekDedication from './WeekDedication'
 import { removeAttachmentsFor } from '../../services/attachments'
 
 const EMPTY = {
@@ -41,8 +42,6 @@ export default function IntegrationFormModal({ open, onClose, integration, defau
 
   const set = (k) => (v) => setForm((f) => ({ ...f, [k]: v }))
   const valid = form.projectId && form.name.trim()
-  const members = Object.fromEntries(state.members.map((m) => [m.id, m]))
-  const weekAllocs = isEdit ? state.allocations.filter((a) => a.integrationId === integration.id && a.weekStart === week) : []
 
   const submit = (e) => {
     e.preventDefault()
@@ -164,19 +163,7 @@ export default function IntegrationFormModal({ open, onClose, integration, defau
 
         {isEdit ? (
           <div className="rounded-2xl border border-edge/80 bg-white/50 p-3.5 sm:col-span-2">
-            <p className="label">Dedicación registrada esta semana</p>
-            {weekAllocs.length === 0 ? (
-              <p className="text-xs text-slate-600">Nadie ha registrado horas esta semana. Se cargan desde “Mi Semana”.</p>
-            ) : (
-              <ul className="flex flex-wrap gap-2">
-                {weekAllocs.map((a) => (
-                  <li key={a.id} className="flex items-center gap-1.5 rounded-full bg-surface py-0.5 pl-0.5 pr-2.5 text-xs shadow-sm ring-1 ring-slate-200">
-                    <Avatar member={members[a.memberId]} size="sm" />
-                    {members[a.memberId]?.name.split(' ')[0]} · <strong>{a.hours} h</strong>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <WeekDedication integration={integration} week={week} />
           </div>
         ) : (
           <Field label="Horas esta semana para el responsable (opcional)" hint="Crea la asignación semanal automáticamente">
