@@ -1,0 +1,267 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Tokens de color y tipografía. Claro por defecto. */
+  :root {
+    --slate-50: 248 250 252;
+    --slate-100: 241 245 249;
+    --slate-200: 226 232 240;
+    --slate-300: 203 213 225;
+    --slate-400: 148 163 184;
+    --slate-500: 100 116 139;
+    --slate-600: 71 85 105;
+    --slate-700: 51 65 85;
+    --slate-800: 30 41 59;
+    --slate-900: 15 23 42;
+    --blue-50: 238 245 255;
+    --blue-100: 220 235 255;
+    --blue-200: 184 215 255;
+    --blue-300: 138 192 255;
+    --blue-400: 77 162 255;
+    --blue-500: 43 140 255;
+    --blue-600: 0 122 255;
+    --blue-700: 0 113 227;
+    --blue-800: 0 98 196;
+    --blue-900: 0 74 153;
+    --emerald-50: 238 251 242;
+    --emerald-100: 214 245 223;
+    --emerald-200: 174 235 192;
+    --emerald-300: 126 221 155;
+    --emerald-400: 79 208 115;
+    --emerald-500: 52 199 89;
+    --emerald-600: 45 176 79;
+    --emerald-700: 36 138 61;
+    --emerald-800: 28 107 48;
+    --emerald-900: 21 82 36;
+    --amber-50: 255 248 235;
+    --amber-100: 255 237 199;
+    --amber-200: 255 220 143;
+    --amber-300: 255 200 87;
+    --amber-400: 255 176 31;
+    --amber-500: 255 159 10;
+    --amber-600: 230 138 0;
+    --amber-700: 179 107 0;
+    --amber-800: 138 82 0;
+    --amber-900: 102 61 0;
+    --red-50: 255 241 240;
+    --red-100: 255 224 222;
+    --red-200: 255 194 190;
+    --red-300: 255 152 144;
+    --red-400: 255 106 96;
+    --red-500: 255 59 48;
+    --red-600: 229 53 43;
+    --red-700: 196 43 34;
+    --red-800: 158 34 27;
+    --red-900: 122 26 21;
+    --surface: 255 255 255;
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --ink: 0 0 0;
+    color-scheme: light;
+  }
+  /* Oscuro: automático según el sistema, o forzado con la clase .dark */
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) {
+      --slate-50: 2 6 23;
+      --slate-100: 30 41 59;
+      --slate-200: 51 65 85;
+      --slate-300: 71 85 105;
+      --slate-400: 100 116 139;
+      --slate-500: 148 163 184;
+      --slate-600: 176 189 206;
+      --slate-700: 203 213 225;
+      --slate-800: 226 232 240;
+      --slate-900: 241 245 249;
+      --blue-50: 12 36 66;
+      --blue-100: 14 50 92;
+      --blue-200: 22 74 138;
+      --blue-300: 40 110 200;
+      --blue-400: 64 156 255;
+      --blue-500: 10 132 255;
+      --blue-600: 10 132 255;
+      --blue-700: 90 170 255;
+      --blue-800: 130 190 255;
+      --blue-900: 175 213 255;
+      --emerald-50: 13 44 23;
+      --emerald-100: 17 62 31;
+      --emerald-200: 26 92 46;
+      --emerald-300: 36 130 64;
+      --emerald-400: 70 210 110;
+      --emerald-500: 48 209 88;
+      --emerald-600: 48 209 88;
+      --emerald-700: 95 222 128;
+      --emerald-800: 135 232 162;
+      --emerald-900: 180 242 198;
+      --amber-50: 54 37 8;
+      --amber-100: 74 50 10;
+      --amber-200: 105 72 14;
+      --amber-300: 150 100 20;
+      --amber-400: 255 190 60;
+      --amber-500: 255 159 10;
+      --amber-600: 255 170 40;
+      --amber-700: 255 192 85;
+      --amber-800: 255 208 125;
+      --amber-900: 255 226 172;
+      --red-50: 56 19 17;
+      --red-100: 80 25 22;
+      --red-200: 110 34 30;
+      --red-300: 160 50 44;
+      --red-400: 255 105 97;
+      --red-500: 255 69 58;
+      --red-600: 255 69 58;
+      --red-700: 255 122 114;
+      --red-800: 255 157 150;
+      --red-900: 255 192 187;
+      --surface: 15 23 42;
+      --ink: 255 255 255;
+      color-scheme: dark;
+    }
+  }
+  :root.dark {
+    --slate-50: 2 6 23;
+    --slate-100: 30 41 59;
+    --slate-200: 51 65 85;
+    --slate-300: 71 85 105;
+    --slate-400: 100 116 139;
+    --slate-500: 148 163 184;
+    --slate-600: 176 189 206;
+    --slate-700: 203 213 225;
+    --slate-800: 226 232 240;
+    --slate-900: 241 245 249;
+    --blue-50: 12 36 66;
+    --blue-100: 14 50 92;
+    --blue-200: 22 74 138;
+    --blue-300: 40 110 200;
+    --blue-400: 64 156 255;
+    --blue-500: 10 132 255;
+    --blue-600: 10 132 255;
+    --blue-700: 90 170 255;
+    --blue-800: 130 190 255;
+    --blue-900: 175 213 255;
+    --emerald-50: 13 44 23;
+    --emerald-100: 17 62 31;
+    --emerald-200: 26 92 46;
+    --emerald-300: 36 130 64;
+    --emerald-400: 70 210 110;
+    --emerald-500: 48 209 88;
+    --emerald-600: 48 209 88;
+    --emerald-700: 95 222 128;
+    --emerald-800: 135 232 162;
+    --emerald-900: 180 242 198;
+    --amber-50: 54 37 8;
+    --amber-100: 74 50 10;
+    --amber-200: 105 72 14;
+    --amber-300: 150 100 20;
+    --amber-400: 255 190 60;
+    --amber-500: 255 159 10;
+    --amber-600: 255 170 40;
+    --amber-700: 255 192 85;
+    --amber-800: 255 208 125;
+    --amber-900: 255 226 172;
+    --red-50: 56 19 17;
+    --red-100: 80 25 22;
+    --red-200: 110 34 30;
+    --red-300: 160 50 44;
+    --red-400: 255 105 97;
+    --red-500: 255 69 58;
+    --red-600: 255 69 58;
+    --red-700: 255 122 114;
+    --red-800: 255 157 150;
+    --red-900: 255 192 187;
+    --surface: 15 23 42;
+    --ink: 255 255 255;
+    color-scheme: dark;
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply bg-slate-50 font-sans text-slate-900;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  /* Títulos: compactos y editoriales */
+  h1,
+  h2,
+  h3 {
+    @apply font-semibold;
+    letter-spacing: -0.02em;
+  }
+  h1 {
+    @apply font-bold;
+  }
+  /* Transición suave al cambiar de tema */
+  body,
+  .card,
+  .glass {
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+  ::selection {
+    @apply bg-blue-200;
+  }
+}
+
+@layer components {
+  /* Campo estilo iOS: relleno gris, sin borde, foco con anillo azul */
+  .input {
+    @apply w-full rounded-xl border border-transparent bg-slate-100 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-500 transition focus:border-blue-500 focus:bg-surface focus:outline-none focus:ring-4 focus:ring-blue-500/15 disabled:opacity-60;
+  }
+  select.input {
+    @apply cursor-pointer appearance-none bg-no-repeat pr-9;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%238E8E93'%3E%3Cpath d='M6.3 7.3a1 1 0 0 1 1.4 0L10 9.6l2.3-2.3a1 1 0 1 1 1.4 1.4l-3 3a1 1 0 0 1-1.4 0l-3-3a1 1 0 0 1 0-1.4Z'/%3E%3C/svg%3E");
+    background-position: right 0.7rem center;
+    background-size: 1.1rem;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition active:scale-[0.97] focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/25 disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100;
+  }
+  .btn-primary {
+    @apply btn bg-blue-600 text-white hover:bg-blue-700;
+  }
+  .btn-secondary {
+    @apply btn bg-slate-100 text-blue-600 hover:bg-slate-200;
+  }
+  .btn-ghost {
+    @apply btn text-slate-600 hover:bg-slate-100;
+  }
+  .btn-danger {
+    @apply btn text-red-500 hover:bg-red-50;
+  }
+  /* Tarjeta: borde fino y nítido en lugar de sombra difusa */
+  .card {
+    @apply rounded-xl border border-slate-200/80 bg-surface;
+  }
+  .label {
+    @apply mb-1.5 block text-xs font-medium text-slate-600;
+  }
+  /* Métricas grandes (KPIs) */
+  .metric {
+    @apply font-sans font-bold tabular-nums;
+    letter-spacing: -0.03em;
+  }
+  /* Datos técnicos: horas, porcentajes, códigos. `.mono-sm` reduce al 85 % del texto que lo rodea. */
+  .mono {
+    @apply font-mono tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .mono-sm {
+    @apply mono;
+    font-size: 0.85em;
+  }
+  /* Badge con borde a juego con su fondo */
+  .badge {
+    @apply inline-flex shrink-0 items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium ring-1 ring-inset;
+  }
+  /* Material translúcido (vibrancy) */
+  .glass {
+    @apply bg-surface/70 backdrop-blur-2xl backdrop-saturate-150;
+  }
+}
+
+/* Scrollbars discretas estilo macOS */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
+}
