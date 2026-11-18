@@ -51,7 +51,7 @@ export default function AssignmentItem({ allocation, integration: i, project, me
           {i.systems && <p className="text-xs text-slate-600">{i.systems}</p>}
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center rounded-full border border-white/80 bg-white/70 shadow-sm shadow-slate-900/[0.03]">
+          <div className="flex items-center rounded-full border border-edge/80 bg-white/70 shadow-sm shadow-slate-900/[0.03]">
             <button className="px-2 py-1.5 text-slate-600 hover:text-slate-900" onClick={() => setHours(hours - 1)} aria-label="Restar hora">
               <Minus className="h-3.5 w-3.5" />
             </button>
@@ -102,7 +102,7 @@ export default function AssignmentItem({ allocation, integration: i, project, me
         </div>
       </div>
 
-      <div className={`border-t px-4 py-3 ${i.blocked ? 'border-rose-500/15 bg-rose-500/[0.07]' : 'border-white/70 bg-white/40'}`}>
+      <div className={`border-t px-4 py-3 ${i.blocked ? 'border-rose-500/15 bg-rose-500/[0.07]' : 'border-edge/70 bg-white/40'}`}>
         <div className="flex items-center justify-between gap-3">
           <span className={`flex items-center gap-2 text-sm font-medium ${i.blocked ? 'text-red-700' : 'text-slate-600'}`}>
             <OctagonAlert className="h-4 w-4" /> ¿Tienes algún bloqueo?

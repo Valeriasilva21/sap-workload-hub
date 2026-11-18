@@ -61,11 +61,73 @@
     --red-900: 136 19 55;
     --surface: 255 255 255;
     --ink: 15 23 42;
+    --glass: 255 255 255;
+    --edge: 255 255 255;
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     --glass-shadow: 0 8px 30px rgb(15 23 42 / 0.04), 0 1px 2px rgb(15 23 42 / 0.03);
     --glass-shadow-hover: 0 14px 40px rgb(15 23 42 / 0.08), 0 2px 4px rgb(15 23 42 / 0.04);
     color-scheme: light;
+  }
+  /* Dark Glass: se activa con la clase .dark en <html> */
+  :root.dark {
+    --slate-50: 9 13 22;
+    --slate-100: 30 41 59;
+    --slate-200: 51 65 85;
+    --slate-300: 71 85 105;
+    --slate-400: 100 116 139;
+    --slate-500: 125 141 163;
+    --slate-600: 148 163 184;
+    --slate-700: 203 213 225;
+    --slate-800: 226 232 240;
+    --slate-900: 241 245 249;
+    --blue-50: 23 37 84;
+    --blue-100: 30 58 138;
+    --blue-200: 30 64 175;
+    --blue-300: 37 99 235;
+    --blue-400: 96 165 250;
+    --blue-500: 59 130 246;
+    --blue-600: 96 165 250;
+    --blue-700: 147 197 253;
+    --blue-800: 191 219 254;
+    --blue-900: 219 234 254;
+    --emerald-50: 6 46 33;
+    --emerald-100: 6 78 59;
+    --emerald-200: 4 120 87;
+    --emerald-300: 5 150 105;
+    --emerald-400: 52 211 153;
+    --emerald-500: 16 185 129;
+    --emerald-600: 52 211 153;
+    --emerald-700: 110 231 183;
+    --emerald-800: 167 243 208;
+    --emerald-900: 209 250 229;
+    --amber-50: 69 26 3;
+    --amber-100: 120 53 15;
+    --amber-200: 146 64 14;
+    --amber-300: 252 211 77;
+    --amber-400: 251 191 36;
+    --amber-500: 245 158 11;
+    --amber-600: 251 191 36;
+    --amber-700: 252 211 77;
+    --amber-800: 253 230 138;
+    --amber-900: 254 243 199;
+    --red-50: 76 5 25;
+    --red-100: 136 19 55;
+    --red-200: 159 18 57;
+    --red-300: 190 18 60;
+    --red-400: 251 113 133;
+    --red-500: 244 63 94;
+    --red-600: 251 113 133;
+    --red-700: 253 164 175;
+    --red-800: 254 205 211;
+    --red-900: 255 228 230;
+    --surface: 15 23 42;
+    --ink: 226 232 240;
+    --glass: 15 23 42;
+    --edge: 30 41 59;
+    --glass-shadow: 0 8px 30px rgb(0 0 0 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.03);
+    --glass-shadow-hover: 0 14px 40px rgb(0 0 0 / 0.45), inset 0 1px 0 rgb(255 255 255 / 0.05);
+    color-scheme: dark;
   }
   html {
     -webkit-font-smoothing: antialiased;
@@ -84,6 +146,21 @@
     background-attachment: fixed;
     min-height: 100vh;
   }
+  /* Lienzo oscuro: #090D16 → #111827 con brillos azul/índigo muy tenues */
+  .dark body {
+    background-color: #090d16;
+    background-image:
+      radial-gradient(at 0% 0%, rgb(37 99 235 / 0.14) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgb(79 70 229 / 0.12) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgb(8 145 178 / 0.1) 0px, transparent 55%),
+      linear-gradient(180deg, #090d16 0%, #111827 100%);
+  }
+  /* Transición suave al cambiar de tema */
+  body,
+  .card,
+  .glass {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
   h1,
   h2,
   h3 {
@@ -101,7 +178,7 @@
 @layer components {
   /* Cristal: tarjetas, paneles y barras */
   .glass-panel {
-    @apply border border-white/80 bg-white/65 backdrop-blur-xl backdrop-saturate-150;
+    @apply border border-edge/80 bg-white/65 backdrop-blur-xl backdrop-saturate-150;
     box-shadow: var(--glass-shadow);
   }
   .card {
@@ -116,7 +193,7 @@
   }
   /* Barras laterales y superiores */
   .glass {
-    @apply border-white/70 bg-white/55 backdrop-blur-xl backdrop-saturate-150;
+    @apply border-edge/70 bg-white/55 backdrop-blur-xl backdrop-saturate-150;
   }
 
   .input {
@@ -134,10 +211,10 @@
   }
   /* Primario: azul → índigo con un brillo sutil */
   .btn-primary {
-    @apply btn bg-gradient-to-b from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-600/25 ring-1 ring-inset ring-white/20 hover:from-blue-600 hover:to-indigo-700 hover:shadow-blue-600/35;
+    @apply btn bg-gradient-to-b from-blue-500 to-indigo-600 text-snow shadow-md shadow-blue-600/25 ring-1 ring-inset ring-snow/20 hover:from-blue-600 hover:to-indigo-700 hover:shadow-blue-600/35;
   }
   .btn-secondary {
-    @apply btn border border-white/80 bg-white/70 text-blue-700 shadow-sm shadow-slate-900/[0.03] backdrop-blur hover:bg-white;
+    @apply btn border border-edge/80 bg-white/70 text-blue-700 shadow-sm shadow-slate-900/[0.03] backdrop-blur hover:bg-white;
   }
   .btn-ghost {
     @apply btn text-slate-600 hover:bg-white/70;

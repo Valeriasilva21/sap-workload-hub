@@ -58,6 +58,19 @@ src/
 - Al activar un bloqueo se registra `blockedSince` = hoy; al desactivarlo se limpia.
 - Clonar semana pasada copia las asignaciones de la semana anterior que no estén ya en la semana actual y cuya interfaz no esté completada.
 
+## Tema claro / oscuro
+
+Botón Sol / Luna arriba a la derecha. Por defecto la app abre en **Light Glass**; la preferencia se guarda en el navegador (`hub:theme`). Los colores son variables CSS (`src/index.css`): `white` es el color del cristal (blanco en claro, pizarra profunda en oscuro), `edge` el borde del cristal y `snow` el blanco real para texto sobre botones de color.
+
+## Adjuntos PDF
+
+En el tablero, al editar una integración se pueden adjuntar PDFs (arrastrar y soltar o elegir), verlos en un visor integrado, descargarlos y eliminarlos. Las tarjetas muestran un contador 📎.
+
+- Se guardan en **Base64 en LocalStorage**: solo en el navegador de quien los adjunta. El resto del equipo **no** los ve.
+- Máximo 2 MB por archivo y ~5 MB en total por navegador (límite del navegador).
+- Si una interfaz se elimina, sus PDFs locales se borran.
+- Para compartirlos con todo el equipo, el siguiente paso es Supabase Storage.
+
 ## Datos compartidos con Supabase
 
 Sin configuración, la app funciona en **modo demo** (datos en el navegador). Con Supabase, todo el equipo ve y edita los mismos datos, y los cambios aparecen **en vivo** en todas las pantallas.

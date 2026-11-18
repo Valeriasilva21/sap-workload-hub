@@ -177,7 +177,7 @@ export default function TeamView({ week }) {
             : 'Los datos se guardan en este navegador. Úsalo para preparar el equipo antes de empezar a registrar trabajo real.'}
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-2xl border border-white/80 bg-white/50 p-4">
+          <div className="rounded-2xl border border-edge/80 bg-white/50 p-4">
             <p className="flex items-center gap-2 text-sm font-semibold text-slate-900">
               <Eraser className="h-4 w-4 text-slate-500" /> Empezar desde cero
             </p>
@@ -188,7 +188,7 @@ export default function TeamView({ week }) {
               Vaciar proyectos y horas
             </button>
           </div>
-          <div className="rounded-2xl border border-white/80 bg-white/50 p-4">
+          <div className="rounded-2xl border border-edge/80 bg-white/50 p-4">
             <p className="flex items-center gap-2 text-sm font-semibold text-slate-900">
               <RotateCcw className="h-4 w-4 text-slate-500" /> Restaurar demo
             </p>

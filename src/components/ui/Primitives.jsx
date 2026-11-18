@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 import { COLOR_CLASSES } from '../../lib/constants'
 
@@ -12,7 +13,7 @@ export function Avatar({ member, size = 'md' }) {
   return (
     <span
       title={member?.name}
-      className={`inline-flex shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-white/25 to-transparent font-semibold text-white ring-2 ring-surface ${
+      className={`inline-flex shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-snow/25 to-transparent font-semibold text-snow ring-2 ring-surface ${
         COLOR_CLASSES[member?.color] ?? 'bg-slate-400'
       } ${sizes[size]}`}
     >
@@ -59,7 +60,7 @@ export function Toggle({ checked, onChange, label, tone = 'blue' }) {
       }`}
     >
       <span
-        className={`inline-block h-6 w-6 rounded-full bg-surface shadow-[0_2px_4px_rgba(0,0,0,0.2),0_0_0_0.5px_rgba(0,0,0,0.04)] transition-transform duration-200 ${
+        className={`inline-block h-6 w-6 rounded-full bg-snow shadow-[0_2px_4px_rgba(0,0,0,0.2),0_0_0_0.5px_rgba(0,0,0,0.04)] transition-transform duration-200 ${
           checked ? 'translate-x-5' : 'translate-x-0.5'
         }`}
       />
@@ -67,37 +68,60 @@ export function Toggle({ checked, onChange, label, tone = 'blue' }) {
   )
 }
 
-export function Modal({ open, onClose, title, subtitle, children, footer }) {
+// Pila de modales abiertos: Escape cierra solo el de arriba y el scroll del fondo
+// se libera recién cuando se cierra el último.
+const modalStack = []
+
+const MODAL_SIZES = { lg: 'sm:max-w-2xl', xl: 'sm:max-w-5xl' }
+
+export function Modal({ open, onClose, title, subtitle, children, footer, size = 'lg', bodyClassName = 'px-6 py-4' }) {
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
+
   useEffect(() => {
     if (!open) return
-    const onKey = (e) => e.key === 'Escape' && onClose()
+    const id = Symbol('modal')
+    modalStack.push(id)
+    const onKey = (e) => {
+      if (e.key === 'Escape' && modalStack[modalStack.length - 1] === id) onCloseRef.current()
+    }
     window.addEventListener('keydown', onKey)
     document.body.style.overflow = 'hidden'
     return () => {
       window.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
+      modalStack.splice(modalStack.indexOf(id), 1)
+      if (!modalStack.length) document.body.style.overflow = ''
     }
-  }, [open, onClose])
+  }, [open])
 
   if (!open) return null
-  return (
+  // Portal: el modal vive fuera de cualquier <form> (un botón suyo nunca envía el formulario de abajo)
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4" role="dialog" aria-modal="true">
-      <div className="absolute inset-0 bg-slate-900/20 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-[22px] border border-white/80 bg-white/85 shadow-apple-lg backdrop-blur-2xl backdrop-saturate-150 sm:max-w-2xl sm:rounded-[22px]">
+      <div className="absolute inset-0 bg-[#020617]/20 backdrop-blur-sm dark:bg-black/55" onClick={onClose} />
+      <div
+        className={`relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-[22px] border border-edge/80 bg-white/85 shadow-apple-lg backdrop-blur-2xl backdrop-saturate-150 sm:rounded-[22px] ${MODAL_SIZES[size] ?? MODAL_SIZES.lg}`}
+      >
         <span className="mx-auto mt-2 h-1.5 w-10 rounded-full bg-slate-300 sm:hidden" />
         <div className="flex items-start justify-between gap-4 px-6 pb-2 pt-5">
-          <div>
-            <h2 className="text-xl font-bold text-slate-900">{title}</h2>
+          <div className="min-w-0">
+            <h2 className="truncate text-xl font-bold text-slate-900">{title}</h2>
             {subtitle && <p className="mt-0.5 text-xs text-slate-600">{subtitle}</p>}
           </div>
-          <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200" aria-label="Cerrar">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"
+            aria-label="Cerrar"
+          >
             <X className="h-4 w-4" strokeWidth={2.5} />
           </button>
         </div>
-        <div className="overflow-y-auto px-6 py-4">{children}</div>
-        {footer && <div className="flex flex-wrap items-center justify-between gap-2 border-t border-white/70 bg-white/50 px-6 py-3.5">{footer}</div>}
+        <div className={`overflow-y-auto ${bodyClassName}`}>{children}</div>
+        {footer && <div className="flex flex-wrap items-center justify-between gap-2 border-t border-edge/70 bg-white/50 px-6 py-3.5">{footer}</div>}
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
 

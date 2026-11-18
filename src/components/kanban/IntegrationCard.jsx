@@ -1,10 +1,10 @@
-import { ChevronLeft, ChevronRight, Clock } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Clock, Paperclip } from 'lucide-react'
 import { STAGE_IDS } from '../../lib/constants'
 import { blockedDays, isAtRisk, isDone } from '../../lib/selectors'
 import { Avatar, ProgressBar } from '../ui/Primitives'
 import { BlockedBadge, DoneBadge, ProjectTag, RiskBadge, TechBadge } from '../ui/Badges'
 
-export default function IntegrationCard({ integration: i, project, owner, hours, onOpen, onMove }) {
+export default function IntegrationCard({ integration: i, project, owner, hours, attachments = 0, onOpen, onMove }) {
   const idx = STAGE_IDS.indexOf(i.stage)
   const done = isDone(i)
   const risk = !i.blocked && isAtRisk(i)
@@ -26,7 +26,7 @@ export default function IntegrationCard({ integration: i, project, owner, hours,
       role="button"
       aria-label={`Editar ${i.name}`}
       className={`group card-hover cursor-grab rounded-2xl border bg-white/85 p-3.5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/25 active:cursor-grabbing ${
-        i.blocked ? 'border-rose-300/70' : 'border-white/80'
+        i.blocked ? 'border-rose-300/70' : 'border-edge/80'
       }`}
     >
       <div className="flex items-start justify-between gap-2">
@@ -60,6 +60,16 @@ export default function IntegrationCard({ integration: i, project, owner, hours,
           <Clock className="h-3 w-3" />
           {hours} h/sem
         </span>
+        {attachments > 0 && (
+          <span
+            className="badge mono bg-blue-500/10 text-blue-700 ring-blue-500/25"
+            title={`${attachments} PDF adjunto${attachments === 1 ? '' : 's'}`}
+            aria-label={`${attachments} PDF adjuntos`}
+          >
+            <Paperclip className="h-3 w-3" />
+            {attachments}
+          </span>
+        )}
         <span className="flex">
           <button
             onClick={stop(() => onMove(STAGE_IDS[idx - 1]))}

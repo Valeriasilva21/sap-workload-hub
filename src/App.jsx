@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { pruneAttachments } from './services/attachments'
 import { Sidebar, TabBar, Topbar } from './components/layout/Layout'
 import Backdrop from './components/layout/Backdrop'
 import Dashboard from './components/dashboard/Dashboard'
@@ -9,6 +10,7 @@ import ProjectsView from './components/projects/ProjectsView'
 import { currentWeekISO } from './lib/date'
 import { usePersistentState } from './lib/usePersistentState'
 import { useStore } from './store/useStore'
+import { useTheme } from './lib/useTheme'
 import { CloudOff, Loader2 } from 'lucide-react'
 
 export default function App() {
@@ -16,6 +18,12 @@ export default function App() {
   const [memberId, setMemberId] = usePersistentState('hub:member', 'm2')
   const [week, setWeek] = useState(currentWeekISO)
   const { state, sync } = useStore()
+  const [theme, toggleTheme] = useTheme()
+
+  // Si una interfaz se elimina (aquí o desde otro equipo), se borran sus PDFs locales
+  useEffect(() => {
+    if (!state.loading) pruneAttachments(new Set(state.integrations.map((i) => i.id)))
+  }, [state.loading, state.integrations])
 
   if (state.loading) {
     const failed = sync.phase === 'load-error'
@@ -49,7 +57,7 @@ export default function App() {
       <Backdrop />
       <Sidebar view={view} onNavigate={setView} />
       <div className="lg:pl-64">
-        <Topbar view={view} week={week} onWeekChange={setWeek} />
+        <Topbar view={view} week={week} onWeekChange={setWeek} theme={theme} onToggleTheme={toggleTheme} />
         <main className="mx-auto max-w-[1600px] px-4 pb-28 pt-6 sm:px-6 lg:px-10 lg:pb-10">
           {view === 'dashboard' && <Dashboard week={week} onOpenMember={openMember} onNavigate={setView} />}
           {view === 'kanban' && <KanbanBoard week={week} />}

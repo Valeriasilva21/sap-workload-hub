@@ -6,7 +6,7 @@ import { LevelBadge, LoadPill, Semaphore, SemaphoreLegend } from '../ui/Badges'
 function MemberLoadCard({ load, onOpen }) {
   const { member, hours, capacity, pct, status, breakdown, blocked, free } = load
   return (
-    <article className="card-hover flex flex-col rounded-2xl border border-white/80 bg-white/60 p-4 shadow-sm shadow-slate-900/[0.03]">
+    <article className="card-hover flex flex-col rounded-2xl border border-edge/80 bg-white/60 p-4 shadow-sm shadow-slate-900/[0.03]">
       <div className="flex items-start gap-3">
         <Avatar member={member} size="lg" />
         <div className="min-w-0 flex-1">

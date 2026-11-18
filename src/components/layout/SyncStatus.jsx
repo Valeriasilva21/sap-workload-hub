@@ -16,7 +16,7 @@ const DOT = { slate: 'bg-slate-400', red: 'bg-red-500', blue: 'bg-blue-500', gre
 export function SyncPill() {
   const label = useSyncLabel()
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/80 bg-white/60 backdrop-blur px-2.5 py-1 text-[11px] font-medium text-slate-700 lg:hidden">
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-edge/80 bg-white/60 backdrop-blur px-2.5 py-1 text-[11px] font-medium text-slate-700 lg:hidden">
       <span className={`h-1.5 w-1.5 rounded-full ${DOT[label.tone]} ${label.spin ? 'animate-pulse' : ''}`} />
       {label.text}
     </span>
@@ -31,7 +31,7 @@ export function SyncCard({ onResetDemo }) {
 
   if (sync.mode === 'local') {
     return (
-      <div className="space-y-2.5 rounded-xl border border-white/80 bg-white/60 backdrop-blur p-3.5 text-xs text-slate-600">
+      <div className="space-y-2.5 rounded-xl border border-edge/80 bg-white/60 backdrop-blur p-3.5 text-xs text-slate-600">
         <p className="flex items-center gap-2 font-semibold text-slate-800">
           <Database className="h-4 w-4 text-slate-500" /> Modo demo
         </p>
@@ -47,7 +47,7 @@ export function SyncCard({ onResetDemo }) {
   return (
     <div
       className={`space-y-2 rounded-xl border p-3.5 text-xs ${
-        failed ? 'border-rose-500/25 bg-rose-500/10 text-rose-800' : 'border-white/80 bg-white/60 backdrop-blur text-slate-600'
+        failed ? 'border-rose-500/25 bg-rose-500/10 text-rose-800' : 'border-edge/80 bg-white/60 backdrop-blur text-slate-600'
       }`}
     >
       <p className="flex items-center gap-2 font-semibold text-slate-800">

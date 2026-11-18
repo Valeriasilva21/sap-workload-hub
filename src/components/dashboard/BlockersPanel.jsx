@@ -11,7 +11,7 @@ export default function BlockersPanel({ items, onResolve, onOpenBoard }) {
       subtitle="Impedimentos reportados por el equipo"
       actions={
         items.length > 0 && (
-          <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-red-500 px-2 text-xs font-semibold text-white">{items.length}</span>
+          <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-red-500 px-2 text-xs font-semibold text-snow">{items.length}</span>
         )
       }
     >
@@ -41,7 +41,7 @@ export default function BlockersPanel({ items, onResolve, onOpenBoard }) {
                 </span>
                 <button
                   onClick={() => onResolve(i.id)}
-                  className="shrink-0 rounded-full border border-white/80 bg-white/60 px-3 py-1 text-xs font-medium text-slate-700 backdrop-blur transition-colors hover:border-emerald-500/30 hover:bg-emerald-500/15 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40"
+                  className="shrink-0 rounded-full border border-edge/80 bg-white/60 px-3 py-1 text-xs font-medium text-slate-700 backdrop-blur transition-colors hover:border-emerald-500/30 hover:bg-emerald-500/15 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40"
                 >
                   Marcar resuelto
                 </button>

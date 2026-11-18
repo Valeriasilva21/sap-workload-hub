@@ -8,7 +8,7 @@ const scale = (name) => Object.fromEntries(SHADES.map((k) => [k, `rgb(var(--${na
 
 export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
-  // Tema único claro (Light Glass): las variantes dark: quedan inactivas.
+  // Light Glass por defecto; la clase .dark en <html> activa Dark Glass (ver src/lib/useTheme.js).
   darkMode: 'class',
   theme: {
     extend: {
@@ -21,8 +21,12 @@ export default {
         blue: scale('blue'), // systemBlue
         emerald: scale('emerald'), // systemGreen
         amber: scale('amber'), // systemOrange / systemYellow
-        red: scale('red'), // systemRed
+        red: scale('red'), // estados críticos (tono rose)
+        rose: scale('red'), // alias: rose y red comparten la misma escala adaptable
         surface: 'rgb(var(--surface) / <alpha-value>)', // tarjetas, hojas, barras
+        white: 'rgb(var(--glass) / <alpha-value>)', // cristal: blanco en claro, pizarra profunda en oscuro
+        snow: '#ffffff', // blanco real (texto sobre botones y badges de color)
+        edge: 'rgb(var(--edge) / <alpha-value>)', // bordes del cristal
         ink: 'rgb(var(--ink) / <alpha-value>)', // separadores y rellenos translúcidos
       },
       boxShadow: {

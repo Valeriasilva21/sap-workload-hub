@@ -1,4 +1,4 @@
-import { CalendarCheck, ChevronLeft, ChevronRight, LayoutDashboard, Network, SquareKanban, Users, FolderKanban } from 'lucide-react'
+import { CalendarCheck, Moon, Sun, ChevronLeft, ChevronRight, LayoutDashboard, Network, SquareKanban, Users, FolderKanban } from 'lucide-react'
 import { addWeeks, currentWeekISO, formatWeekRange, isoWeekNumber } from '../../lib/date'
 import { useStore } from '../../store/useStore'
 import { SyncCard, SyncPill } from './SyncStatus'
@@ -14,7 +14,7 @@ export const NAV_ITEMS = [
 function AppIcon({ size = 'h-9 w-9' }) {
   return (
     <span
-      className={`flex ${size} items-center justify-center rounded-[10px] bg-gradient-to-b from-blue-400 to-blue-700 text-white shadow-[0_2px_6px_rgba(0,122,255,0.35)]`}
+      className={`flex ${size} items-center justify-center rounded-[10px] bg-gradient-to-b from-blue-400 to-blue-700 text-snow shadow-[0_2px_6px_rgba(0,122,255,0.35)]`}
     >
       <Network className="h-[55%] w-[55%]" strokeWidth={2.25} />
     </span>
@@ -46,7 +46,7 @@ export function Sidebar({ view, onNavigate }) {
               key={id}
               onClick={() => onNavigate(id)}
               className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-[14px] transition ${
-                active ? 'bg-white/80 font-semibold text-blue-700 shadow-sm shadow-slate-900/[0.04] ring-1 ring-white' : 'font-medium text-slate-700 hover:bg-white/50'
+                active ? 'bg-white/80 font-semibold text-blue-700 shadow-sm shadow-slate-900/[0.04] ring-1 ring-edge' : 'font-medium text-slate-700 hover:bg-white/50'
               }`}
             >
               <Icon className="h-[18px] w-[18px] text-blue-600" strokeWidth={active ? 2.25 : 1.9} />
@@ -67,7 +67,7 @@ export function WeekPicker({ week, onChange }) {
   const current = currentWeekISO()
   const isCurrent = week === current
   return (
-    <div className="flex items-center gap-0.5 rounded-full border border-white/80 bg-white/55 p-1 shadow-sm shadow-slate-900/[0.04] backdrop-blur-xl">
+    <div className="flex items-center gap-0.5 rounded-full border border-edge/80 bg-white/55 p-1 shadow-sm shadow-slate-900/[0.04] backdrop-blur-xl">
       <button
         onClick={() => onChange(addWeeks(week, -1))}
         className="flex h-7 w-7 items-center justify-center rounded-full text-slate-600 transition hover:bg-surface hover:shadow-sm"
@@ -99,7 +99,26 @@ export function WeekPicker({ week, onChange }) {
 }
 
 /** Encabezado con "Large Title" y barra translúcida. */
-export function Topbar({ view, week, onWeekChange }) {
+/** Botón Sol / Luna para alternar Light Glass ↔ Dark Glass. */
+export function ThemeToggle({ theme, onToggle }) {
+  const dark = theme === 'dark'
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      role="switch"
+      aria-checked={dark}
+      aria-label={dark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'}
+      title={dark ? 'Tema claro' : 'Tema oscuro'}
+      className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-edge/80 bg-white/55 text-slate-700 shadow-sm shadow-slate-900/[0.04] backdrop-blur-xl transition hover:bg-white/90 hover:text-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30"
+    >
+      <Sun className={`absolute h-[18px] w-[18px] transition-all duration-300 ${dark ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`} />
+      <Moon className={`absolute h-[18px] w-[18px] transition-all duration-300 ${dark ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'}`} />
+    </button>
+  )
+}
+
+export function Topbar({ view, week, onWeekChange, theme, onToggleTheme }) {
   const meta = NAV_ITEMS.find((n) => n.id === view) ?? NAV_ITEMS[0]
   return (
     <header className="glass sticky top-0 z-20 border-b">
@@ -114,6 +133,7 @@ export function Topbar({ view, week, onWeekChange }) {
         <div className="flex items-center gap-2">
           <SyncPill />
           <WeekPicker week={week} onChange={onWeekChange} />
+          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         </div>
       </div>
     </header>
@@ -123,7 +143,7 @@ export function Topbar({ view, week, onWeekChange }) {
 /** Tab bar inferior estilo iOS (solo móvil/tablet). */
 export function TabBar({ view, onNavigate }) {
   return (
-    <nav className="glass fixed inset-x-0 bottom-0 z-30 flex border-t border-white/70 pb-[env(safe-area-inset-bottom)] lg:hidden">
+    <nav className="glass fixed inset-x-0 bottom-0 z-30 flex border-t border-edge/70 pb-[env(safe-area-inset-bottom)] lg:hidden">
       {NAV_ITEMS.map(({ id, label, icon: Icon }) => {
         const active = view === id
         return (

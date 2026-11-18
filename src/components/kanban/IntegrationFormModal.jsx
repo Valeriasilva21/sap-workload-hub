@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Trash2 } from 'lucide-react'
+import { Paperclip, Trash2 } from 'lucide-react'
 import { useStore } from '../../store/useStore'
 import { STAGES, TECHNOLOGIES } from '../../lib/constants'
 import { blockedDays } from '../../lib/selectors'
 import { Avatar, Field, Modal, Toggle } from '../ui/Primitives'
 import ProjectSelect from '../ui/ProjectSelect'
+import AttachmentsPanel from '../attachments/AttachmentsPanel'
+import { removeAttachmentsFor } from '../../services/attachments'
 
 const EMPTY = {
   projectId: '',
@@ -69,6 +71,7 @@ export default function IntegrationFormModal({ open, onClose, integration, defau
   const remove = () => {
     if (window.confirm(`¿Eliminar "${integration.name}"? También se borrarán sus horas registradas.`)) {
       actions.deleteIntegration(integration.id)
+      removeAttachmentsFor(integration.id)
       onClose()
     }
   }
@@ -159,7 +162,7 @@ export default function IntegrationFormModal({ open, onClose, integration, defau
         </Field>
 
         {isEdit ? (
-          <div className="rounded-2xl border border-white/80 bg-white/50 p-3.5 sm:col-span-2">
+          <div className="rounded-2xl border border-edge/80 bg-white/50 p-3.5 sm:col-span-2">
             <p className="label">Dedicación registrada esta semana</p>
             {weekAllocs.length === 0 ? (
               <p className="text-xs text-slate-600">Nadie ha registrado horas esta semana. Se cargan desde “Mi Semana”.</p>
@@ -189,7 +192,7 @@ export default function IntegrationFormModal({ open, onClose, integration, defau
         )}
 
         <div
-          className={`rounded-2xl p-3.5 sm:col-span-2 ${form.blocked ? 'border border-rose-500/20 bg-rose-500/[0.07]' : 'border border-white/80 bg-white/50'}`}
+          className={`rounded-2xl p-3.5 sm:col-span-2 ${form.blocked ? 'border border-rose-500/20 bg-rose-500/[0.07]' : 'border border-edge/80 bg-white/50'}`}
         >
           <div className="flex items-center justify-between gap-3">
             <div>
@@ -211,6 +214,16 @@ export default function IntegrationFormModal({ open, onClose, integration, defau
               value={form.blockReason}
               onChange={(e) => set('blockReason')(e.target.value)}
             />
+          )}
+        </div>
+
+        <div className="rounded-2xl border border-edge/80 bg-white/40 p-3.5 sm:col-span-2">
+          {isEdit ? (
+            <AttachmentsPanel integrationId={integration.id} />
+          ) : (
+            <p className="flex items-center gap-2 text-xs text-slate-600">
+              <Paperclip className="h-4 w-4 text-slate-500" /> Podrás adjuntar PDFs (especificaciones, mapeos, evidencias de pruebas) después de crear la integración.
+            </p>
           )}
         </div>
       </form>

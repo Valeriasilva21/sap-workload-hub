@@ -160,7 +160,7 @@ export default function AddAssignmentForm({ member, week, onDone, onCancel }) {
                 type="button"
                 onClick={() => setAmount(v)}
                 className={`rounded-full border px-3 py-1 text-sm font-medium ${
-                  Number(amount) === v ? 'border-transparent bg-gradient-to-b from-blue-500 to-indigo-600 text-white shadow-sm shadow-blue-600/25' : 'border-white/80 bg-white/70 text-slate-700 hover:bg-white'
+                  Number(amount) === v ? 'border-transparent bg-gradient-to-b from-blue-500 to-indigo-600 text-snow shadow-sm shadow-blue-600/25' : 'border-edge/80 bg-white/70 text-slate-700 hover:bg-white'
                 }`}
               >
                 {v}

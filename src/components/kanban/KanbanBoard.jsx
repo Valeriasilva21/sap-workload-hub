@@ -6,6 +6,7 @@ import { indexById, weekHoursByIntegration, weekMembersByIntegration } from '../
 import KanbanFilters, { EMPTY_FILTERS } from './KanbanFilters'
 import IntegrationCard from './IntegrationCard'
 import IntegrationFormModal from './IntegrationFormModal'
+import { useAttachmentsMap } from '../../services/attachments'
 
 export default function KanbanBoard({ week }) {
   const { state, actions } = useStore()
@@ -13,6 +14,7 @@ export default function KanbanBoard({ week }) {
   const [modal, setModal] = useState(null) // { id } para editar · { stage } para crear
   const [dragOver, setDragOver] = useState(null)
 
+  const attachmentsMap = useAttachmentsMap()
   const hoursMap = useMemo(() => weekHoursByIntegration(state, week), [state, week])
   const weekMembers = useMemo(() => weekMembersByIntegration(state, week), [state, week])
   const projects = useMemo(() => indexById(state.projects), [state.projects])
@@ -68,7 +70,7 @@ export default function KanbanBoard({ week }) {
               }}
               onDrop={(e) => onDrop(e, stage.id)}
               className={`flex w-[82vw] shrink-0 snap-start flex-col rounded-2xl border backdrop-blur-md transition sm:w-72 2xl:w-auto 2xl:min-w-0 2xl:flex-1 ${
-                isOver ? 'border-blue-400/70 bg-blue-500/10' : 'border-white/60 bg-white/40'
+                isOver ? 'border-blue-400/70 bg-blue-500/10' : 'border-edge/60 bg-white/40'
               }`}
             >
               <header className="px-3 pb-2 pt-3">
@@ -79,7 +81,7 @@ export default function KanbanBoard({ week }) {
                       <span className="font-mono text-slate-600">{idx + 1}.</span> {stage.label}
                     </h2>
                   </div>
-                  <span className="mono flex h-6 min-w-6 items-center justify-center rounded-full border border-white/80 bg-white/80 px-2 text-xs font-semibold text-slate-700">{items.length}</span>
+                  <span className="mono flex h-6 min-w-6 items-center justify-center rounded-full border border-edge/80 bg-white/80 px-2 text-xs font-semibold text-slate-700">{items.length}</span>
                 </div>
                 <div className="mt-1 flex items-center justify-between pl-[18px] text-[11px] text-slate-600">
                   <span className="truncate">{stage.hint}</span>
@@ -95,6 +97,7 @@ export default function KanbanBoard({ week }) {
                     project={projects[i.projectId]}
                     owner={members[i.ownerId]}
                     hours={hoursMap[i.id] || 0}
+                    attachments={attachmentsMap[i.id]?.length ?? 0}
                     onOpen={() => setModal({ id: i.id })}
                     onMove={(stageId) => actions.moveStage(i.id, stageId)}
                   />

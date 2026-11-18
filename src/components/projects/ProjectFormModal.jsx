@@ -78,7 +78,7 @@ export default function ProjectFormModal({ open, onClose, project, onSaved }) {
       }
     >
       <form id="project-form" onSubmit={submit} className="space-y-5">
-        <div className="flex items-center gap-3 rounded-xl border border-white/80 bg-white/60 p-4">
+        <div className="flex items-center gap-3 rounded-xl border border-edge/80 bg-white/60 p-4">
           <span className={`h-3 w-3 shrink-0 rounded-sm ${COLOR_CLASSES[form.color] ?? 'bg-slate-400'}`} />
           <span className="font-mono text-sm font-semibold text-slate-700">{code || suggestCode(name) || 'CÓDIGO'}</span>
           <span className="text-slate-400">·</span>
@@ -126,7 +126,7 @@ export default function ProjectFormModal({ open, onClose, project, onSaved }) {
                   form.color === c ? 'ring-2 ring-slate-900' : 'hover:scale-110'
                 }`}
               >
-                {form.color === c && <Check className="h-4 w-4 text-white" strokeWidth={3} />}
+                {form.color === c && <Check className="h-4 w-4 text-snow" strokeWidth={3} />}
               </button>
             ))}
           </div>

@@ -16,7 +16,7 @@ export const STAGES = [
     short: 'Diseño',
     hint: 'Mapeos y especificaciones',
     dot: 'bg-sky-500',
-    soft: 'bg-sky-500/10 text-sky-700',
+    soft: 'bg-sky-500/10 text-sky-700 dark:bg-sky-400/10 dark:text-sky-300',
   },
   {
     id: 'build',
@@ -32,7 +32,7 @@ export const STAGES = [
     short: 'QA / UAT',
     hint: 'Pruebas integrales y de usuario',
     dot: 'bg-violet-500',
-    soft: 'bg-violet-500/10 text-violet-700',
+    soft: 'bg-violet-500/10 text-violet-700 dark:bg-violet-400/10 dark:text-violet-300',
   },
   {
     id: 'deploy',
@@ -48,11 +48,11 @@ export const STAGE_IDS = STAGES.map((s) => s.id)
 export const stageById = (id) => STAGES.find((s) => s.id === id) ?? STAGES[0]
 
 export const TECHNOLOGIES = [
-  { id: 'CPI', label: 'CPI', name: 'SAP Cloud Integration (iFlow)', className: 'bg-sky-500/10 text-sky-700 ring-sky-500/25' },
-  { id: 'PO', label: 'PI/PO', name: 'SAP PI/PO', className: 'bg-violet-500/10 text-violet-700 ring-violet-500/25' },
-  { id: 'API', label: 'API', name: 'API REST / OData', className: 'bg-cyan-500/10 text-cyan-700 ring-cyan-500/25' },
-  { id: 'IDoc', label: 'IDoc', name: 'IDoc / ALE / EDI', className: 'bg-indigo-500/10 text-indigo-700 ring-indigo-500/25' },
-  { id: 'ABAP', label: 'ABAP/RFC', name: 'Proxy ABAP / RFC / BAPI', className: 'bg-fuchsia-500/10 text-fuchsia-700 ring-fuchsia-500/25' },
+  { id: 'CPI', label: 'CPI', name: 'SAP Cloud Integration (iFlow)', className: 'bg-sky-500/10 text-sky-700 ring-sky-500/25 dark:bg-sky-400/10 dark:text-sky-300 dark:ring-sky-400/30' },
+  { id: 'PO', label: 'PI/PO', name: 'SAP PI/PO', className: 'bg-violet-500/10 text-violet-700 ring-violet-500/25 dark:bg-violet-400/10 dark:text-violet-300 dark:ring-violet-400/30' },
+  { id: 'API', label: 'API', name: 'API REST / OData', className: 'bg-cyan-500/10 text-cyan-700 ring-cyan-500/25 dark:bg-cyan-400/10 dark:text-cyan-300 dark:ring-cyan-400/30' },
+  { id: 'IDoc', label: 'IDoc', name: 'IDoc / ALE / EDI', className: 'bg-indigo-500/10 text-indigo-700 ring-indigo-500/25 dark:bg-indigo-400/10 dark:text-indigo-300 dark:ring-indigo-400/30' },
+  { id: 'ABAP', label: 'ABAP/RFC', name: 'Proxy ABAP / RFC / BAPI', className: 'bg-fuchsia-500/10 text-fuchsia-700 ring-fuchsia-500/25 dark:bg-fuchsia-400/10 dark:text-fuchsia-300 dark:ring-fuchsia-400/30' },
 ]
 
 export const techById = (id) => TECHNOLOGIES.find((t) => t.id === id) ?? TECHNOLOGIES[0]
@@ -75,9 +75,9 @@ export const COLOR_CLASSES = {
 // Niveles de seniority de los integrantes (el rol sigue siendo texto libre)
 export const MEMBER_LEVELS = [
   { id: 'junior', label: 'Junior', className: 'bg-slate-50 text-slate-700 ring-slate-300' },
-  { id: 'semisenior', label: 'Semi Senior', className: 'bg-sky-500/10 text-sky-700 ring-sky-500/30' },
+  { id: 'semisenior', label: 'Semi Senior', className: 'bg-sky-500/10 text-sky-700 ring-sky-500/30 dark:text-sky-300 dark:ring-sky-400/30' },
   { id: 'senior', label: 'Senior', className: 'bg-blue-500/10 text-blue-700 ring-blue-500/30' },
-  { id: 'lead', label: 'Líder técnico', className: 'bg-violet-500/10 text-violet-700 ring-violet-500/30' },
+  { id: 'lead', label: 'Líder técnico', className: 'bg-violet-500/10 text-violet-700 ring-violet-500/30 dark:text-violet-300 dark:ring-violet-400/30' },
   { id: 'architect', label: 'Arquitecto/a', className: 'bg-amber-500/15 text-amber-800 ring-amber-500/30' },
 ]
 export const levelById = (id) => MEMBER_LEVELS.find((l) => l.id === id) ?? null

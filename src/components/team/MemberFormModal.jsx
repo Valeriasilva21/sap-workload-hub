@@ -74,7 +74,7 @@ export default function MemberFormModal({ open, onClose, member, onSaved }) {
       }
     >
       <form id="member-form" onSubmit={submit} className="space-y-5">
-        <div className="flex items-center gap-4 rounded-xl border border-white/80 bg-white/60 p-4">
+        <div className="flex items-center gap-4 rounded-xl border border-edge/80 bg-white/60 p-4">
           <Avatar member={{ name: name || '?', color: form.color }} size="lg" />
           <div className="min-w-0">
             <p className="truncate font-semibold text-slate-900">{name || 'Nombre del integrante'}</p>
@@ -110,7 +110,7 @@ export default function MemberFormModal({ open, onClose, member, onSaved }) {
                 aria-checked={form.level === l.id}
                 onClick={() => set('level')(l.id)}
                 className={`rounded-full border px-3 py-1 text-sm font-medium ${
-                  form.level === l.id ? 'border-transparent bg-gradient-to-b from-blue-500 to-indigo-600 text-white shadow-sm shadow-blue-600/25' : 'border-white/80 bg-white/70 text-slate-700 hover:bg-white'
+                  form.level === l.id ? 'border-transparent bg-gradient-to-b from-blue-500 to-indigo-600 text-snow shadow-sm shadow-blue-600/25' : 'border-edge/80 bg-white/70 text-slate-700 hover:bg-white'
                 }`}
               >
                 {l.label}
@@ -144,7 +144,7 @@ export default function MemberFormModal({ open, onClose, member, onSaved }) {
                 type="button"
                 onClick={() => set('capacity')(h)}
                 className={`mono rounded-full border px-3 py-1 text-sm font-medium ${
-                  capacity === h ? 'border-transparent bg-gradient-to-b from-blue-500 to-indigo-600 text-white shadow-sm shadow-blue-600/25' : 'border-white/80 bg-white/70 text-slate-700 hover:bg-white'
+                  capacity === h ? 'border-transparent bg-gradient-to-b from-blue-500 to-indigo-600 text-snow shadow-sm shadow-blue-600/25' : 'border-edge/80 bg-white/70 text-slate-700 hover:bg-white'
                 }`}
               >
                 {h} h
@@ -180,7 +180,7 @@ export default function MemberFormModal({ open, onClose, member, onSaved }) {
                   form.color === c ? 'ring-2 ring-slate-900' : 'hover:scale-110'
                 }`}
               >
-                {form.color === c && <Check className="h-4 w-4 text-white" strokeWidth={3} />}
+                {form.color === c && <Check className="h-4 w-4 text-snow" strokeWidth={3} />}
               </button>
             ))}
           </div>
