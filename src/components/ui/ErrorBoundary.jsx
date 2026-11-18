@@ -10,7 +10,7 @@ export default class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, info) {
-    console.error('[Workload Hub] Error de interfaz:', error, info?.componentStack)
+    console.error('[novaFlow] Error de interfaz:', error, info?.componentStack)
   }
 
   render() {

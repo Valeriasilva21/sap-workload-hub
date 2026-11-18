@@ -1,7 +1,8 @@
-import { CalendarCheck, Moon, Sun, ChevronLeft, ChevronRight, LayoutDashboard, Network, SquareKanban, Users, FolderKanban } from 'lucide-react'
+import { CalendarCheck, Moon, Sun, ChevronLeft, ChevronRight, LayoutDashboard, SquareKanban, Users, FolderKanban } from 'lucide-react'
 import { addWeeks, currentWeekISO, formatWeekRange, isoWeekNumber } from '../../lib/date'
 import { useStore } from '../../store/useStore'
 import { SyncCard, SyncPill } from './SyncStatus'
+import { Brand, BrandTagline, LogoMark, Wordmark } from '../brand/Logo'
 
 export const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', title: 'Dashboard', subtitle: 'Capacidad, avance y bloqueos del equipo de Integraciones', icon: LayoutDashboard },
@@ -11,16 +12,6 @@ export const NAV_ITEMS = [
   { id: 'team', label: 'Equipo', title: 'Equipo', subtitle: 'Integrantes, roles y capacidad semanal', icon: Users },
 ]
 
-function AppIcon({ size = 'h-9 w-9' }) {
-  return (
-    <span
-      className={`flex ${size} items-center justify-center rounded-[10px] bg-gradient-to-b from-blue-400 to-blue-700 text-snow shadow-[0_2px_6px_rgba(0,122,255,0.35)]`}
-    >
-      <Network className="h-[55%] w-[55%]" strokeWidth={2.25} />
-    </span>
-  )
-}
-
 /** Barra lateral estilo macOS: material translúcido, selección en gris suave, íconos en azul. */
 export function Sidebar({ view, onNavigate }) {
   const { actions } = useStore()
@@ -29,12 +20,8 @@ export function Sidebar({ view, onNavigate }) {
   }
   return (
     <aside className="glass fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r px-3 pb-4 pt-6 lg:flex">
-      <div className="flex items-center gap-3 px-2">
-        <AppIcon />
-        <div className="leading-tight">
-          <p className="text-[15px] font-semibold text-slate-900">Workload Hub</p>
-          <p className="text-xs text-slate-600">SAP Integraciones</p>
-        </div>
+      <div className="px-2">
+        <Brand />
       </div>
 
       <p className="mb-1 mt-8 px-3 text-[11px] font-semibold text-slate-500">Vistas</p>
@@ -125,7 +112,10 @@ export function Topbar({ view, week, onWeekChange, theme, onToggleTheme }) {
       <div className="mx-auto flex max-w-[1600px] flex-wrap items-end justify-between gap-3 px-4 pb-3 pt-4 sm:px-6 lg:px-10 lg:pt-6">
         <div className="min-w-0">
           <p className="mb-0.5 flex items-center gap-1.5 text-[13px] font-medium text-slate-600 lg:hidden">
-            <AppIcon size="h-5 w-5" /> Workload Hub
+            <LogoMark size={20} /> <Wordmark className="text-[14px]" />
+            <span className="hidden truncate text-[11px] sm:inline">
+              <span className="text-slate-400">·</span> <BrandTagline />
+            </span>
           </p>
           <h1 className="text-[28px] font-bold leading-tight text-slate-900 sm:text-[34px]">{meta.title}</h1>
           <p className="hidden text-[15px] text-slate-600 sm:block">{meta.subtitle}</p>

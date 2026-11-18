@@ -1,4 +1,4 @@
--- SAP Workload & Integration Hub — esquema para Supabase (PostgreSQL)
+-- novaFlow (by Weinnova) · SAP Integration & Workload Hub — esquema para Supabase (PostgreSQL)
 --
 -- Cómo usarlo: Supabase → SQL Editor → pegar este archivo completo → Run.
 -- Se puede volver a ejecutar sin romper nada (usa "if not exists" / "drop ... if exists").

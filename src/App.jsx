@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { pruneAttachments } from './services/attachments'
 import { Sidebar, TabBar, Topbar } from './components/layout/Layout'
 import Backdrop from './components/layout/Backdrop'
+import { BrandTagline, LogoMark, Wordmark } from './components/brand/Logo'
 import Dashboard from './components/dashboard/Dashboard'
 import KanbanBoard from './components/kanban/KanbanBoard'
 import MyWeek from './components/myweek/MyWeek'
@@ -32,7 +33,12 @@ export default function App() {
         <Backdrop />
         <div className="card flex max-w-sm flex-col items-center gap-3 p-8 text-center">
           {failed ? <CloudOff className="h-8 w-8 text-red-500" /> : <Loader2 className="h-8 w-8 animate-spin text-blue-600" />}
-          <p className="font-semibold text-slate-900">{failed ? 'No se pudo conectar con Supabase' : 'Cargando datos del equipo…'}</p>
+          <LogoMark size={44} />
+          <p className="font-semibold text-slate-900">
+            {failed ? 'No se pudo conectar con Supabase' : <>Bienvenido a <Wordmark className="text-[16px]" /></>}
+          </p>
+          <p className="text-xs"><BrandTagline /></p>
+          {!failed && <p className="text-xs text-slate-500">Cargando datos del equipo…</p>}
           {failed && (
             <>
               <p className="mono break-words text-xs text-slate-600">{sync.error}</p>

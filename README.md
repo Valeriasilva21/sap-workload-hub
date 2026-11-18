@@ -1,4 +1,6 @@
-# SAP Workload & Integration Hub
+# novaFlow
+
+**by Weinnova • SAP Integration & Workload Hub**
 
 Aplicación web para que el área de **Integraciones SAP** registre su carga semanal y el estado de sus interfaces, y para que el Líder Técnico vea en tiempo real capacidad, avance por etapa y bloqueos.
 
