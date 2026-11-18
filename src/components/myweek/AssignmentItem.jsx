@@ -8,7 +8,7 @@ import { ProjectTag, TechBadge } from '../ui/Badges'
 function StageStepper({ value, onChange }) {
   const current = STAGE_IDS.indexOf(value)
   return (
-    <div className="grid grid-cols-5 gap-0.5 rounded-[10px] bg-ink/[0.05] p-0.5" role="radiogroup" aria-label="Etapa">
+    <div className="grid grid-cols-6 gap-0.5 rounded-[10px] bg-ink/[0.05] p-0.5" role="radiogroup" aria-label="Etapa">
       {STAGES.map((s, k) => (
         <button
           key={s.id}
@@ -17,7 +17,7 @@ function StageStepper({ value, onChange }) {
           aria-checked={k === current}
           title={s.label}
           onClick={() => onChange(s.id)}
-          className={`truncate rounded-[8px] px-1 py-1.5 text-[11px] font-medium transition sm:text-[13px] ${
+          className={`truncate rounded-[8px] px-1 py-1.5 text-[11px] font-medium transition sm:text-[12.5px] ${
             k === current
               ? 'bg-white font-semibold text-blue-700 shadow-[0_1px_3px_rgba(15,23,42,0.12)]'
               : k < current

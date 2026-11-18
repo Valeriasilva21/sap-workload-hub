@@ -95,6 +95,19 @@ export const TABLES = [
       createdAt: r.created_at,
     }),
   },
+  {
+    table: 'comments',
+    key: 'comments',
+    // created_at lo pone la base (no se envía, así la huella no cambia al recibirlo)
+    toRow: (c) => ({ id: c.id, integration_id: c.integrationId, member_id: c.memberId || null, body: c.body }),
+    fromRow: (r) => ({
+      id: r.id,
+      integrationId: r.integration_id,
+      memberId: r.member_id ?? '',
+      body: r.body,
+      createdAt: r.created_at,
+    }),
+  },
 ]
 
 export const tableByName = Object.fromEntries(TABLES.map((t) => [t.table, t]))

@@ -1,10 +1,10 @@
-import { ChevronLeft, ChevronRight, Clock, Paperclip } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Clock, MessageSquare, Paperclip } from 'lucide-react'
 import { STAGE_IDS } from '../../lib/constants'
 import { blockedDays, isAtRisk, isDone } from '../../lib/selectors'
 import { Avatar, ProgressBar } from '../ui/Primitives'
 import { BlockedBadge, DoneBadge, ProjectTag, RiskBadge, TechBadge } from '../ui/Badges'
 
-export default function IntegrationCard({ integration: i, project, owner, hours, attachments = 0, onOpen, onMove }) {
+export default function IntegrationCard({ integration: i, project, owner, hours, attachments = 0, comments = 0, onOpen, onMove }) {
   const idx = STAGE_IDS.indexOf(i.stage)
   const done = isDone(i)
   const risk = !i.blocked && isAtRisk(i)
@@ -51,7 +51,7 @@ export default function IntegrationCard({ integration: i, project, owner, hours,
         <span className="mono text-[11px] font-medium text-slate-600">{i.progress}%</span>
       </div>
 
-      <div className="mt-3 flex items-center justify-between gap-2 border-t border-slate-200/80 pt-2.5">
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5 border-t border-slate-200/80 pt-2.5">
         <span className="flex min-w-0 items-center gap-1.5 text-xs text-slate-600">
           <Avatar member={owner} size="sm" />
           <span className="truncate">{owner?.name.split(' ')[0] ?? 'Sin asignar'}</span>
@@ -68,6 +68,16 @@ export default function IntegrationCard({ integration: i, project, owner, hours,
           >
             <Paperclip className="h-3 w-3" />
             {attachments}
+          </span>
+        )}
+        {comments > 0 && (
+          <span
+            className="badge mono bg-orange-500/10 text-orange-700 ring-orange-500/25 dark:text-orange-300"
+            title={`${comments} comentario${comments === 1 ? '' : 's'}`}
+            aria-label={`${comments} comentarios`}
+          >
+            <MessageSquare className="h-3 w-3" />
+            {comments}
           </span>
         )}
         <span className="flex">

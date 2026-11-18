@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Paperclip, Trash2 } from 'lucide-react'
+import { MessageSquare, Paperclip, Trash2 } from 'lucide-react'
 import { useStore } from '../../store/useStore'
 import { STAGES, TECHNOLOGIES } from '../../lib/constants'
 import { blockedDays } from '../../lib/selectors'
 import { Avatar, Field, Modal, Toggle } from '../ui/Primitives'
 import ProjectSelect from '../ui/ProjectSelect'
 import AttachmentsPanel from '../attachments/AttachmentsPanel'
+import CommentsPanel from '../comments/CommentsPanel'
 import { removeAttachmentsFor } from '../../services/attachments'
 
 const EMPTY = {
@@ -227,6 +228,16 @@ export default function IntegrationFormModal({ open, onClose, integration, defau
           )}
         </div>
       </form>
+      {/* Fuera del <form>: comentar se guarda al instante, sin “Guardar cambios” */}
+      <div className="mt-4 rounded-2xl border border-edge/80 bg-white/40 p-3.5">
+        {isEdit ? (
+          <CommentsPanel integrationId={integration.id} />
+        ) : (
+          <p className="flex items-center gap-2 text-xs text-slate-600">
+            <MessageSquare className="h-4 w-4 text-slate-500" /> Podrás dejar comentarios para el equipo después de crear la integración.
+          </p>
+        )}
+      </div>
     </Modal>
   )
 }

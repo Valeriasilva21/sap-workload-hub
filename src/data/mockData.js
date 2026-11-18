@@ -106,5 +106,5 @@ export function buildSeed() {
     }
   }
 
-  return { version: SEED_VERSION, members, projects, integrations, allocations }
+  return { version: SEED_VERSION, members, projects, integrations, allocations, comments: [] }
 }

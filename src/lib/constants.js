@@ -42,6 +42,14 @@ export const STAGES = [
     dot: 'bg-emerald-500',
     soft: 'bg-emerald-500/15 text-emerald-700',
   },
+  {
+    id: 'changes',
+    label: 'Ajustes y Cambios',
+    short: 'Ajustes',
+    hint: 'Mejoras, cambios y nuevos campos',
+    dot: 'bg-orange-500',
+    soft: 'bg-orange-500/10 text-orange-700 dark:bg-orange-400/10 dark:text-orange-300',
+  },
 ]
 
 export const STAGE_IDS = STAGES.map((s) => s.id)

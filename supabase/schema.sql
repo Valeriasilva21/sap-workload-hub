@@ -40,7 +40,7 @@ create table if not exists public.integrations (
   name          text not null check (length(trim(name)) > 0),
   systems       text not null default '',
   technology    text not null check (technology in ('CPI', 'PO', 'API', 'IDoc', 'ABAP')),
-  stage         text not null default 'backlog' check (stage in ('backlog', 'design', 'build', 'test', 'deploy')),
+  stage         text not null default 'backlog' check (stage in ('backlog', 'design', 'build', 'test', 'deploy', 'changes')),
   owner_id      text references public.members (id) on delete set null,
   progress      smallint not null default 0 check (progress between 0 and 100),
   due_date      date,
@@ -62,35 +62,50 @@ create table if not exists public.allocations (
   unique (member_id, integration_id, week_start)
 );
 
+-- Comentarios del equipo sobre una interfaz (member_id = autor)
+create table if not exists public.comments (
+  id             text primary key default gen_random_uuid()::text,
+  integration_id text not null references public.integrations (id) on delete cascade,
+  member_id      text references public.members (id) on delete set null,
+  body           text not null check (length(trim(body)) between 1 and 1000),
+  created_at     timestamptz not null default now()
+);
+
 -- Cambios para bases creadas con una versión anterior de este archivo
 alter table public.members add column if not exists level text not null default ''
   check (level in ('', 'junior', 'semisenior', 'senior', 'lead', 'architect'));
+alter table public.integrations drop constraint if exists integrations_stage_check;
+alter table public.integrations add constraint integrations_stage_check
+  check (stage in ('backlog', 'design', 'build', 'test', 'deploy', 'changes'));
 
 -- Índices para las llaves foráneas y la consulta por semana
 create index if not exists integrations_project_id_idx on public.integrations (project_id);
 create index if not exists integrations_owner_id_idx   on public.integrations (owner_id);
 create index if not exists allocations_integration_idx on public.allocations (integration_id);
 create index if not exists allocations_week_member_idx on public.allocations (week_start, member_id);
+create index if not exists comments_integration_idx    on public.comments (integration_id, created_at);
+create index if not exists comments_member_idx         on public.comments (member_id);
 
 -- ─── Acceso (Data API) ──────────────────────────────────────────────────────
--- Solo estas 4 tablas y solo las operaciones que usa la app.
+-- Solo estas 5 tablas y solo las operaciones que usa la app.
 
 grant usage on schema public to anon, authenticated;
 grant select, insert, update, delete
-  on public.members, public.projects, public.integrations, public.allocations
+  on public.members, public.projects, public.integrations, public.allocations, public.comments
   to anon, authenticated;
 
 alter table public.members      enable row level security;
 alter table public.projects     enable row level security;
 alter table public.integrations enable row level security;
 alter table public.allocations  enable row level security;
+alter table public.comments     enable row level security;
 
 -- Políticas abiertas (modelo elegido: sin login). Una por operación y tabla.
 do $$
 declare
   t text;
 begin
-  foreach t in array array['members', 'projects', 'integrations', 'allocations'] loop
+  foreach t in array array['members', 'projects', 'integrations', 'allocations', 'comments'] loop
     execute format('drop policy if exists "open_select" on public.%I', t);
     execute format('drop policy if exists "open_insert" on public.%I', t);
     execute format('drop policy if exists "open_update" on public.%I', t);
@@ -109,7 +124,7 @@ do $$
 declare
   t text;
 begin
-  foreach t in array array['members', 'projects', 'integrations', 'allocations'] loop
+  foreach t in array array['members', 'projects', 'integrations', 'allocations', 'comments'] loop
     if not exists (
       select 1 from pg_publication_tables
       where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = t

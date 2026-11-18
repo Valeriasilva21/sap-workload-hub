@@ -46,6 +46,7 @@ function reducer(state, action) {
         projects: state.projects.filter((p) => p.id !== action.id),
         integrations: state.integrations.filter((i) => !removed.has(i.id)),
         allocations: state.allocations.filter((a) => !removed.has(a.integrationId)),
+        comments: state.comments.filter((c) => !removed.has(c.integrationId)),
       }
     }
     case 'ADD_INTEGRATION':
@@ -62,6 +63,7 @@ function reducer(state, action) {
         ...state,
         integrations: state.integrations.filter((i) => i.id !== action.id),
         allocations: state.allocations.filter((a) => a.integrationId !== action.id),
+        comments: state.comments.filter((c) => c.integrationId !== action.id),
       }
     case 'ADD_ALLOCATIONS':
       return { ...state, allocations: [...state.allocations, ...action.allocations] }
@@ -83,22 +85,27 @@ function reducer(state, action) {
         members: state.members.filter((m) => m.id !== action.id),
         allocations: state.allocations.filter((a) => a.memberId !== action.id),
         integrations: state.integrations.map((i) => (i.ownerId === action.id ? { ...i, ownerId: '' } : i)),
+        comments: state.comments.map((c) => (c.memberId === action.id ? { ...c, memberId: '' } : c)),
       }
+    case 'ADD_COMMENT':
+      return { ...state, comments: [...state.comments, action.comment] }
+    case 'DELETE_COMMENT':
+      return { ...state, comments: state.comments.filter((c) => c.id !== action.id) }
     case 'CLEAR_WORK':
       // Empezar desde cero: conserva el equipo, borra proyectos, interfaces y horas
-      return { ...state, projects: [], integrations: [], allocations: [] }
+      return { ...state, projects: [], integrations: [], allocations: [], comments: [] }
     default:
       return state
   }
 }
 
-const EMPTY_REMOTE_STATE = { version: SEED_VERSION, members: [], projects: [], integrations: [], allocations: [], loading: true }
+const EMPTY_REMOTE_STATE = { version: SEED_VERSION, members: [], projects: [], integrations: [], allocations: [], comments: [], loading: true }
 
 function init() {
   // Con Supabase configurado, los datos vienen de la base (ver useRemoteSync)
   if (isSupabaseConfigured) return EMPTY_REMOTE_STATE
   const saved = repository.load()
-  return saved?.version === SEED_VERSION ? saved : buildSeed()
+  return saved?.version === SEED_VERSION ? { comments: [], ...saved } : buildSeed()
 }
 
 export function StoreProvider({ children }) {
@@ -180,6 +187,12 @@ export function StoreProvider({ children }) {
         dispatch({ type: 'ADD_MEMBER', member })
         return member
       },
+      addComment({ integrationId, memberId, body }) {
+        const comment = { id: uid('c'), integrationId, memberId: memberId || '', body: body.trim(), createdAt: now() }
+        dispatch({ type: 'ADD_COMMENT', comment })
+        return comment
+      },
+      deleteComment: (id) => dispatch({ type: 'DELETE_COMMENT', id }),
       updateMember: (id, changes) => dispatch({ type: 'UPDATE_MEMBER', id, changes }),
       deleteMember: (id) => dispatch({ type: 'DELETE_MEMBER', id }),
       clearWorkData: () => dispatch({ type: 'CLEAR_WORK' }),

@@ -18,6 +18,11 @@ export default function KanbanBoard({ week }) {
   const hoursMap = useMemo(() => weekHoursByIntegration(state, week), [state, week])
   const weekMembers = useMemo(() => weekMembersByIntegration(state, week), [state, week])
   const projects = useMemo(() => indexById(state.projects), [state.projects])
+  const commentCounts = useMemo(() => {
+    const counts = {}
+    for (const c of state.comments) counts[c.integrationId] = (counts[c.integrationId] || 0) + 1
+    return counts
+  }, [state.comments])
   const members = useMemo(() => indexById(state.members), [state.members])
 
   const filtered = useMemo(() => {
@@ -69,7 +74,7 @@ export default function KanbanBoard({ week }) {
                 if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(null)
               }}
               onDrop={(e) => onDrop(e, stage.id)}
-              className={`flex w-[82vw] shrink-0 snap-start flex-col rounded-2xl border backdrop-blur-md transition sm:w-72 2xl:w-auto 2xl:min-w-0 2xl:flex-1 ${
+              className={`flex w-[82vw] shrink-0 snap-start flex-col rounded-2xl border backdrop-blur-md transition sm:w-72 2xl:w-auto 2xl:min-w-[240px] 2xl:flex-1 ${
                 isOver ? 'border-blue-400/70 bg-blue-500/10' : 'border-edge/60 bg-white/40'
               }`}
             >
@@ -98,6 +103,7 @@ export default function KanbanBoard({ week }) {
                     owner={members[i.ownerId]}
                     hours={hoursMap[i.id] || 0}
                     attachments={attachmentsMap[i.id]?.length ?? 0}
+                    comments={commentCounts[i.id] || 0}
                     onOpen={() => setModal({ id: i.id })}
                     onMove={(stageId) => actions.moveStage(i.id, stageId)}
                   />
