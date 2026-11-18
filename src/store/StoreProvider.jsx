@@ -4,6 +4,8 @@ import { buildSeed, SEED_VERSION } from '../data/mockData'
 import { repository } from '../services/repository'
 import { todayISO } from '../lib/date'
 import { MEMBER_COLOR_KEYS, PROJECT_COLOR_KEYS } from '../lib/constants'
+import { isSupabaseConfigured } from '../services/supabaseClient'
+import { useRemoteSync } from './useRemoteSync'
 
 const uid = (prefix) =>
   `${prefix}_${(globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2)).replace(/-/g, '').slice(0, 10)}`
@@ -20,6 +22,18 @@ function reducer(state, action) {
   switch (action.type) {
     case 'RESET':
       return action.state
+    case 'LOADED':
+      return { ...state, ...action.data, loading: false }
+    case 'REMOTE_UPSERT': {
+      const list = state[action.key]
+      const exists = list.some((x) => x.id === action.item.id)
+      return {
+        ...state,
+        [action.key]: exists ? list.map((x) => (x.id === action.item.id ? action.item : x)) : [...list, action.item],
+      }
+    }
+    case 'REMOTE_DELETE':
+      return { ...state, [action.key]: state[action.key].filter((x) => x.id !== action.id) }
     case 'ADD_PROJECT':
       return { ...state, projects: [...state.projects, action.project] }
     case 'ADD_INTEGRATION':
@@ -66,7 +80,11 @@ function reducer(state, action) {
   }
 }
 
+const EMPTY_REMOTE_STATE = { version: SEED_VERSION, members: [], projects: [], integrations: [], allocations: [], loading: true }
+
 function init() {
+  // Con Supabase configurado, los datos vienen de la base (ver useRemoteSync)
+  if (isSupabaseConfigured) return EMPTY_REMOTE_STATE
   const saved = repository.load()
   return saved?.version === SEED_VERSION ? saved : buildSeed()
 }
@@ -76,9 +94,11 @@ export function StoreProvider({ children }) {
   const stateRef = useRef(state)
   stateRef.current = state
 
+  // Modo demo: persistencia en este navegador. Modo Supabase: sincronización con la base.
   useEffect(() => {
-    repository.save(state)
+    if (!isSupabaseConfigured) repository.save(state)
   }, [state])
+  const sync = useRemoteSync(state, dispatch)
 
   const actions = useMemo(
     () => ({
@@ -150,13 +170,13 @@ export function StoreProvider({ children }) {
       deleteMember: (id) => dispatch({ type: 'DELETE_MEMBER', id }),
       clearWorkData: () => dispatch({ type: 'CLEAR_WORK' }),
       resetDemo() {
-        repository.clear()
+        if (!isSupabaseConfigured) repository.clear()
         dispatch({ type: 'RESET', state: buildSeed() })
       },
     }),
     [],
   )
 
-  const value = useMemo(() => ({ state, actions }), [state, actions])
+  const value = useMemo(() => ({ state, actions, sync }), [state, actions, sync])
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
 }

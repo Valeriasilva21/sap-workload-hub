@@ -7,12 +7,35 @@ import TeamView from './components/team/TeamView'
 import { currentWeekISO } from './lib/date'
 import { usePersistentState } from './lib/usePersistentState'
 import { useTheme } from './lib/useTheme'
+import { useStore } from './store/useStore'
+import { CloudOff, Loader2 } from 'lucide-react'
 
 export default function App() {
   const [view, setView] = usePersistentState('hub:view', 'dashboard')
   const [memberId, setMemberId] = usePersistentState('hub:member', 'm2')
   const [week, setWeek] = useState(currentWeekISO)
   const [theme, setTheme] = useTheme()
+  const { state, sync } = useStore()
+
+  if (state.loading) {
+    const failed = sync.phase === 'load-error'
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-6">
+        <div className="card flex max-w-sm flex-col items-center gap-3 p-8 text-center">
+          {failed ? <CloudOff className="h-8 w-8 text-red-500" /> : <Loader2 className="h-8 w-8 animate-spin text-blue-600" />}
+          <p className="font-semibold text-slate-900">{failed ? 'No se pudo conectar con Supabase' : 'Cargando datos del equipo…'}</p>
+          {failed && (
+            <>
+              <p className="mono break-words text-xs text-slate-600">{sync.error}</p>
+              <button className="btn-primary mt-2" onClick={sync.retry}>
+                Reintentar
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    )
+  }
 
   const openMember = (id) => {
     setMemberId(id)

@@ -1,109 +1,115 @@
--- SAP Workload & Integration Hub — esquema PostgreSQL / Supabase
--- Refleja 1:1 el modelo del front (camelCase ↔ snake_case).
+-- SAP Workload & Integration Hub — esquema para Supabase (PostgreSQL)
+--
+-- Cómo usarlo: Supabase → SQL Editor → pegar este archivo completo → Run.
+-- Se puede volver a ejecutar sin romper nada (usa "if not exists" / "drop ... if exists").
+--
+-- Modelo de acceso elegido: ABIERTO, sin login.
+--   Cualquiera que abra la app puede ver y modificar todos los datos.
+--   La clave publicable de Supabase va dentro de la página pública, así que
+--   estas políticas son lo único que controla el acceso.
+--   Para cerrarlo más adelante: activar Supabase Auth y cambiar las políticas
+--   "open_*" de abajo por políticas "to authenticated" (ver README).
+--
+-- Los IDs son texto generado por la app (p. ej. "m_3f9a1c2b7d"), para que la
+-- interfaz responda al instante y la escritura en la base ocurra en segundo plano.
 
-create extension if not exists pgcrypto;
+-- ─── Tablas ─────────────────────────────────────────────────────────────────
 
-create table public.members (
-  id          uuid primary key default gen_random_uuid(),
-  name        text not null,
-  role        text,
-  capacity    numeric(5,1) not null default 40 check (capacity > 0),
-  color       text,
-  active      boolean not null default true,
-  auth_user_id uuid unique references auth.users (id) on delete set null,
-  created_at  timestamptz not null default now()
-);
-
-create table public.projects (
-  id         uuid primary key default gen_random_uuid(),
-  code       text,
-  name       text not null,
-  color      text,
+create table if not exists public.members (
+  id         text primary key default gen_random_uuid()::text,
+  name       text not null check (length(trim(name)) between 2 and 60),
+  role       text not null default '',
+  capacity   numeric(4,1) not null default 40 check (capacity > 0 and capacity <= 60),
+  color      text not null default 'blue',
+  active     boolean not null default true,
   created_at timestamptz not null default now()
 );
 
-create type public.integration_stage as enum ('backlog', 'design', 'build', 'test', 'deploy');
+create table if not exists public.projects (
+  id         text primary key default gen_random_uuid()::text,
+  code       text not null default '',
+  name       text not null check (length(trim(name)) > 0),
+  color      text not null default 'blue',
+  created_at timestamptz not null default now()
+);
 
-create table public.integrations (
-  id            uuid primary key default gen_random_uuid(),
-  project_id    uuid not null references public.projects (id) on delete cascade,
-  name          text not null,
-  systems       text,
+create table if not exists public.integrations (
+  id            text primary key default gen_random_uuid()::text,
+  project_id    text not null references public.projects (id) on delete cascade,
+  name          text not null check (length(trim(name)) > 0),
+  systems       text not null default '',
   technology    text not null check (technology in ('CPI', 'PO', 'API', 'IDoc', 'ABAP')),
-  stage         public.integration_stage not null default 'backlog',
-  owner_id      uuid references public.members (id) on delete set null,
+  stage         text not null default 'backlog' check (stage in ('backlog', 'design', 'build', 'test', 'deploy')),
+  owner_id      text references public.members (id) on delete set null,
   progress      smallint not null default 0 check (progress between 0 and 100),
   due_date      date,
   blocked       boolean not null default false,
-  block_reason  text,
+  block_reason  text not null default '',
   blocked_since date,
   created_at    timestamptz not null default now(),
-  updated_at    timestamptz not null default now(),
-  constraint blocked_has_since check (not blocked or blocked_since is not null)
+  updated_at    timestamptz not null default now()
 );
 
-create index integrations_project_id_idx on public.integrations (project_id);
-create index integrations_owner_id_idx on public.integrations (owner_id);
-create index integrations_blocked_idx on public.integrations (blocked) where blocked;
-
--- Asignación semanal: horas de un integrante en una interfaz para una semana (lunes).
-create table public.allocations (
-  id             uuid primary key default gen_random_uuid(),
-  member_id      uuid not null references public.members (id) on delete cascade,
-  integration_id uuid not null references public.integrations (id) on delete cascade,
+-- Horas de un integrante en una interfaz durante una semana (week_start = lunes)
+create table if not exists public.allocations (
+  id             text primary key default gen_random_uuid()::text,
+  member_id      text not null references public.members (id) on delete cascade,
+  integration_id text not null references public.integrations (id) on delete cascade,
   week_start     date not null check (extract(isodow from week_start) = 1),
-  hours          numeric(5,1) not null check (hours >= 0),
+  hours          numeric(4,1) not null check (hours >= 0 and hours <= 80),
   created_at     timestamptz not null default now(),
   unique (member_id, integration_id, week_start)
 );
 
-create index allocations_week_member_idx on public.allocations (week_start, member_id);
-create index allocations_integration_id_idx on public.allocations (integration_id);
+-- Índices para las llaves foráneas y la consulta por semana
+create index if not exists integrations_project_id_idx on public.integrations (project_id);
+create index if not exists integrations_owner_id_idx   on public.integrations (owner_id);
+create index if not exists allocations_integration_idx on public.allocations (integration_id);
+create index if not exists allocations_week_member_idx on public.allocations (week_start, member_id);
 
--- Cargabilidad semanal por integrante (equivale a selectors.memberLoad)
-create view public.member_week_load with (security_invoker = true) as
-select m.id as member_id,
-       a.week_start,
-       sum(a.hours)                                       as hours,
-       m.capacity,
-       round(sum(a.hours) / m.capacity * 100)             as pct,
-       case when sum(a.hours) / m.capacity > 1    then 'over'
-            when sum(a.hours) / m.capacity >= 0.85 then 'optimal'
-            else 'available' end                          as status
-from public.members m
-join public.allocations a on a.member_id = m.id
-group by m.id, a.week_start, m.capacity;
+-- ─── Acceso (Data API) ──────────────────────────────────────────────────────
+-- Solo estas 4 tablas y solo las operaciones que usa la app.
 
--- Mantiene updated_at y blocked_since
-create or replace function public.integrations_before_write() returns trigger
-language plpgsql set search_path = '' as $$
-begin
-  new.updated_at := now();
-  if new.blocked and new.blocked_since is null then
-    new.blocked_since := current_date;
-  elsif not new.blocked then
-    new.blocked_since := null;
-    new.block_reason := null;
-  end if;
-  return new;
-end $$;
+grant usage on schema public to anon, authenticated;
+grant select, insert, update, delete
+  on public.members, public.projects, public.integrations, public.allocations
+  to anon, authenticated;
 
-create trigger integrations_before_write
-before insert or update on public.integrations
-for each row execute function public.integrations_before_write();
-
--- Seguridad: activar RLS y abrir lectura/escritura a usuarios autenticados del equipo.
--- Ajusta las políticas (p. ej. solo el propio integrante edita sus allocations).
 alter table public.members      enable row level security;
 alter table public.projects     enable row level security;
 alter table public.integrations enable row level security;
 alter table public.allocations  enable row level security;
 
-create policy "team read members"      on public.members      for select to authenticated using (true);
-create policy "team read projects"     on public.projects     for select to authenticated using (true);
-create policy "team write projects"    on public.projects     for insert to authenticated with check (true);
-create policy "team all integrations"  on public.integrations for all    to authenticated using (true) with check (true);
-create policy "team read allocations"  on public.allocations  for select to authenticated using (true);
-create policy "own allocations write"  on public.allocations  for all    to authenticated
-  using      (member_id in (select id from public.members where auth_user_id = (select auth.uid())))
-  with check (member_id in (select id from public.members where auth_user_id = (select auth.uid())));
+-- Políticas abiertas (modelo elegido: sin login). Una por operación y tabla.
+do $$
+declare
+  t text;
+begin
+  foreach t in array array['members', 'projects', 'integrations', 'allocations'] loop
+    execute format('drop policy if exists "open_select" on public.%I', t);
+    execute format('drop policy if exists "open_insert" on public.%I', t);
+    execute format('drop policy if exists "open_update" on public.%I', t);
+    execute format('drop policy if exists "open_delete" on public.%I', t);
+    execute format('create policy "open_select" on public.%I for select to anon, authenticated using (true)', t);
+    execute format('create policy "open_insert" on public.%I for insert to anon, authenticated with check (true)', t);
+    execute format('create policy "open_update" on public.%I for update to anon, authenticated using (true) with check (true)', t);
+    execute format('create policy "open_delete" on public.%I for delete to anon, authenticated using (true)', t);
+  end loop;
+end $$;
+
+-- ─── Tiempo real ────────────────────────────────────────────────────────────
+-- Los cambios de cualquier persona aparecen al instante en las demás pantallas.
+
+do $$
+declare
+  t text;
+begin
+  foreach t in array array['members', 'projects', 'integrations', 'allocations'] loop
+    if not exists (
+      select 1 from pg_publication_tables
+      where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = t
+    ) then
+      execute format('alter publication supabase_realtime add table public.%I', t);
+    end if;
+  end loop;
+end $$;

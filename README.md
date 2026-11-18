@@ -58,9 +58,27 @@ src/
 - Al activar un bloqueo se registra `blockedSince` = hoy; al desactivarlo se limpia.
 - Clonar semana pasada copia las asignaciones de la semana anterior que no estén ya en la semana actual y cuya interfaz no esté completada.
 
-## Migrar a Supabase / PostgreSQL
+## Datos compartidos con Supabase
 
-1. Ejecuta `supabase/schema.sql` (tablas, vista `member_week_load`, trigger de bloqueo, RLS).
-2. `npm i @supabase/supabase-js` y define `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`.
-3. Carga el estado inicial con `loadAll(client)` de `services/supabaseRepository.js` en `StoreProvider` y, en cada acción, llama al writer correspondiente (`upsertIntegration`, `upsertAllocations`, …). Los selectores y componentes no cambian.
-4. Opcional: suscripción Realtime a `integrations` y `allocations` para que el dashboard del líder se actualice sin recargar.
+Sin configuración, la app funciona en **modo demo** (datos en el navegador). Con Supabase, todo el equipo ve y edita los mismos datos, y los cambios aparecen **en vivo** en todas las pantallas.
+
+### Configurar
+
+1. Crea un proyecto en [supabase.com](https://supabase.com) (plan gratuito).
+2. **SQL Editor** → pega [`supabase/schema.sql`](supabase/schema.sql) → **Run**. Crea las tablas, los permisos y el tiempo real. Se puede volver a ejecutar.
+3. **Project Settings → API Keys**: copia la *Project URL* y la *publishable key* (`sb_publishable_…`). Nunca uses la *secret key* en la app.
+4. **Desarrollo local:** copia `.env.example` como `.env.local`, completa los dos valores y reinicia `npm run dev`.
+5. **Sitio publicado:** en GitHub → *Settings → Secrets and variables → Actions → Variables*, crea `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY` y vuelve a ejecutar el workflow *Deploy to GitHub Pages*.
+
+La primera vez la base está vacía: agrega al equipo en **Equipo**, o usa **Restaurar demo** para cargar los datos de ejemplo.
+
+### Cómo funciona
+
+- `src/services/supabaseSync.js` traduce el estado de la app a filas de la base y calcula las diferencias.
+- `src/store/useRemoteSync.js` carga los datos al iniciar, guarda los cambios en segundo plano (agrupados cada 400 ms, con reintento automático) y aplica en vivo los cambios de otras personas. Una edición local pendiente nunca es pisada por un cambio remoto de la misma fila.
+- Las acciones del store no cambiaron: la sincronización es transparente para los componentes.
+- El indicador de la barra lateral muestra *En vivo*, *Guardando…* o *Sin guardar* (con el error y botón para reintentar).
+
+### Seguridad: acceso abierto
+
+Se eligió **acceso sin login**: cualquiera con el link puede ver y modificar los datos, porque la clave publicable va dentro de la página. Las políticas `open_*` de `schema.sql` lo hacen explícito. Para cerrarlo: activar Supabase Auth (por ejemplo login por email), deshabilitar el registro público e invitar al equipo, y reemplazar las políticas `open_*` por políticas `to authenticated`.

@@ -94,7 +94,9 @@ function MemberRow({ member, week, onEdit, onToast }) {
 }
 
 export default function TeamView({ week }) {
-  const { state, actions } = useStore()
+  const { state, actions, sync } = useStore()
+  const shared = sync.mode === 'remote'
+  const scope = shared ? ' para TODO el equipo' : ''
   const [modal, setModal] = useState(null) // { member } para editar · {} para crear
   const [toast, setToast] = useState(null)
   const clearToast = useCallback(() => setToast(null), [])
@@ -109,7 +111,7 @@ export default function TeamView({ week }) {
   const clearWork = () => {
     const msg =
       `Se borrarán ${state.projects.length} proyectos, ${state.integrations.length} interfaces y todas las horas registradas.\n` +
-      'El equipo se conserva. Esta acción no se puede deshacer.\n\n¿Empezar desde cero?'
+      `El equipo se conserva. Esta acción no se puede deshacer${scope}.\n\n¿Empezar desde cero?`
     if (window.confirm(msg)) {
       actions.clearWorkData()
       setToast('Listo: el equipo se mantiene y el tablero quedó vacío')
@@ -117,7 +119,7 @@ export default function TeamView({ week }) {
   }
 
   const resetDemo = () => {
-    if (window.confirm('¿Restaurar los datos de demostración? Se reemplazan el equipo y todos los datos actuales.')) {
+    if (window.confirm(`¿Restaurar los datos de demostración? Se reemplazan el equipo y todos los datos actuales${scope}.`)) {
       actions.resetDemo()
       setToast('Datos de demostración restaurados')
     }
@@ -161,7 +163,9 @@ export default function TeamView({ week }) {
       <section className="card p-5">
         <h2 className="text-[17px] text-slate-900">Datos de la app</h2>
         <p className="mt-1 text-sm text-slate-600">
-          Los datos se guardan en este navegador. Úsalo para preparar el equipo antes de empezar a registrar trabajo real.
+          {shared
+            ? 'Los datos están en Supabase y los comparte todo el equipo: estas acciones afectan a todos.'
+            : 'Los datos se guardan en este navegador. Úsalo para preparar el equipo antes de empezar a registrar trabajo real.'}
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <div className="rounded-xl border border-slate-200/80 p-4">

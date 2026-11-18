@@ -1,6 +1,7 @@
-import { CalendarCheck, ChevronLeft, ChevronRight, Database, LayoutDashboard, Monitor, Moon, Network, RotateCcw, SquareKanban, Sun, Users } from 'lucide-react'
+import { CalendarCheck, ChevronLeft, ChevronRight, LayoutDashboard, Monitor, Moon, Network, SquareKanban, Sun, Users } from 'lucide-react'
 import { addWeeks, currentWeekISO, formatWeekRange, isoWeekNumber } from '../../lib/date'
 import { useStore } from '../../store/useStore'
+import { SyncCard, SyncPill } from './SyncStatus'
 
 export const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', title: 'Dashboard', subtitle: 'Capacidad, avance y bloqueos del equipo de Integraciones', icon: LayoutDashboard },
@@ -107,15 +108,7 @@ export function Sidebar({ view, onNavigate, theme, onThemeChange }) {
         <ThemeSwitcher theme={theme} onChange={onThemeChange} />
       </div>
 
-      <div className="space-y-2.5 rounded-xl bg-ink/[0.035] p-3.5 text-xs text-slate-600">
-        <p className="flex items-center gap-2 font-semibold text-slate-700">
-          <Database className="h-4 w-4 text-slate-500" /> Modo demo
-        </p>
-        <p className="leading-relaxed">Los cambios se guardan en este navegador. Estructura lista para Supabase.</p>
-        <button onClick={reset} className="flex items-center gap-1.5 font-medium text-blue-600 hover:text-blue-800">
-          <RotateCcw className="h-3.5 w-3.5" /> Restaurar datos demo
-        </button>
-      </div>
+      <SyncCard onResetDemo={reset} />
     </aside>
   )
 }
@@ -169,6 +162,7 @@ export function Topbar({ view, week, onWeekChange, theme, onThemeChange }) {
           <p className="hidden text-[15px] text-slate-600 sm:block">{meta.subtitle}</p>
         </div>
         <div className="flex items-center gap-2">
+          <SyncPill />
           <WeekPicker week={week} onChange={onWeekChange} />
           <ThemeCycleButton theme={theme} onChange={onThemeChange} />
         </div>
