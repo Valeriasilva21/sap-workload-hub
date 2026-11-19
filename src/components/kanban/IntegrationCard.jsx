@@ -34,7 +34,9 @@ export default function IntegrationCard({ integration: i, project, owner, hours,
         <TechBadge tech={i.technology} />
       </div>
 
-      <h3 className="mt-2 text-sm font-semibold leading-snug text-slate-900">{i.name}</h3>
+      <h3 className="mt-2 line-clamp-3 text-sm font-semibold leading-snug text-slate-900 [overflow-wrap:anywhere]" title={i.name}>
+        {i.name}
+      </h3>
       {i.systems && <p className="mt-0.5 truncate text-xs text-slate-600" title={i.systems}>{i.systems}</p>}
 
       {(i.blocked || risk || done) && (
@@ -51,18 +53,21 @@ export default function IntegrationCard({ integration: i, project, owner, hours,
         <span className="mono text-[11px] font-medium text-slate-600">{i.progress}%</span>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5 border-t border-slate-200/80 pt-2.5">
-        <span className="flex min-w-0 items-center gap-1.5 text-xs text-slate-600">
+      <div className="mt-3 flex items-center gap-1.5 border-t border-slate-200/80 pt-2.5">
+        <span className="flex min-w-0 flex-1 items-center gap-1.5 text-xs text-slate-600" title={owner?.name ?? 'Sin asignar'}>
           <Avatar member={owner} size="sm" />
           <span className="truncate">{owner?.name.split(' ')[0] ?? 'Sin asignar'}</span>
         </span>
-        <span className="badge mono bg-slate-500/10 text-slate-700 ring-slate-500/15">
+        <span
+          className="badge mono shrink-0 gap-1 px-2 bg-slate-500/10 text-slate-700 ring-slate-500/15"
+          title={`${hours} h registradas esta semana`}
+        >
           <Clock className="h-3 w-3" />
-          {hours} h/sem
+          {hours} h
         </span>
         {attachments > 0 && (
           <span
-            className="badge mono bg-blue-500/10 text-blue-700 ring-blue-500/25"
+            className="badge mono shrink-0 gap-1 px-2 bg-blue-500/10 text-blue-700 ring-blue-500/25"
             title={`${attachments} PDF adjunto${attachments === 1 ? '' : 's'}`}
             aria-label={`${attachments} PDF adjuntos`}
           >
@@ -72,7 +77,7 @@ export default function IntegrationCard({ integration: i, project, owner, hours,
         )}
         {comments > 0 && (
           <span
-            className="badge mono bg-orange-500/10 text-orange-700 ring-orange-500/25 dark:text-orange-300"
+            className="badge mono shrink-0 gap-1 px-2 bg-orange-500/10 text-orange-700 ring-orange-500/25 dark:text-orange-300"
             title={`${comments} comentario${comments === 1 ? '' : 's'}`}
             aria-label={`${comments} comentarios`}
           >
@@ -80,7 +85,7 @@ export default function IntegrationCard({ integration: i, project, owner, hours,
             {comments}
           </span>
         )}
-        <span className="flex">
+        <span className="-mr-1 flex shrink-0">
           <button
             onClick={stop(() => onMove(STAGE_IDS[idx - 1]))}
             disabled={idx === 0}
