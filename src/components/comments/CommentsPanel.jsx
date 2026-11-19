@@ -4,7 +4,14 @@ import { useStore } from '../../store/useStore'
 import { usePersistentState } from '../../lib/usePersistentState'
 import { Avatar } from '../ui/Primitives'
 
-const MAX = 1000
+const MAX = 5000
+
+/** Ajusta la altura del cuadro al texto (hasta ~12 líneas, luego hace scroll). */
+const autoGrow = (el) => {
+  if (!el) return
+  el.style.height = 'auto'
+  el.style.height = `${Math.min(el.scrollHeight, 288)}px`
+}
 
 /** "hace 5 min", "ayer 14:20", "12 nov 09:15". */
 function formatWhen(iso) {
@@ -62,7 +69,7 @@ export default function CommentsPanel({ integrationId }) {
       </p>
 
       {comments.length > 0 && (
-        <ul className="mb-3 max-h-64 space-y-2.5 overflow-y-auto pr-1">
+        <ul className="mb-3 max-h-[28rem] space-y-2.5 overflow-y-auto pr-1">
           {comments.map((c) => {
             const m = members[c.memberId]
             return (
@@ -96,10 +103,14 @@ export default function CommentsPanel({ integrationId }) {
 
       <div className="rounded-2xl border border-edge/80 bg-white/70 p-2 focus-within:ring-2 focus-within:ring-blue-500/30">
         <textarea
-          rows={2}
+          ref={autoGrow}
+          rows={3}
           maxLength={MAX}
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => {
+            setText(e.target.value)
+            autoGrow(e.target)
+          }}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
               e.preventDefault()
@@ -131,7 +142,14 @@ export default function CommentsPanel({ integrationId }) {
           </button>
         </div>
       </div>
-      <p className="mt-1 text-[11px] text-slate-500">⌘/Ctrl + Enter para enviar · visible para todo el equipo</p>
+      <p className="mt-1 flex justify-between gap-2 text-[11px] text-slate-500">
+        <span>⌘/Ctrl + Enter para enviar · visible para todo el equipo</span>
+        {text.length > MAX * 0.8 && (
+          <span className={`mono ${text.length >= MAX ? 'text-red-600' : ''}`}>
+            {text.length}/{MAX}
+          </span>
+        )}
+      </p>
     </div>
   )
 }

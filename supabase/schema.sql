@@ -67,13 +67,16 @@ create table if not exists public.comments (
   id             text primary key default gen_random_uuid()::text,
   integration_id text not null references public.integrations (id) on delete cascade,
   member_id      text references public.members (id) on delete set null,
-  body           text not null check (length(trim(body)) between 1 and 1000),
+  body           text not null check (length(trim(body)) between 1 and 5000),
   created_at     timestamptz not null default now()
 );
 
 -- Cambios para bases creadas con una versión anterior de este archivo
 alter table public.members add column if not exists level text not null default ''
   check (level in ('', 'junior', 'semisenior', 'senior', 'lead', 'architect'));
+alter table public.comments drop constraint if exists comments_body_check;
+alter table public.comments add constraint comments_body_check
+  check (length(trim(body)) between 1 and 5000);
 alter table public.integrations drop constraint if exists integrations_stage_check;
 alter table public.integrations add constraint integrations_stage_check
   check (stage in ('backlog', 'design', 'build', 'test', 'deploy', 'changes'));
