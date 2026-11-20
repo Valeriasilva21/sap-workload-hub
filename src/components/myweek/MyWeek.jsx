@@ -2,7 +2,9 @@ import { useCallback, useMemo, useState } from 'react'
 import { CalendarPlus, Copy, Plus, UserPlus } from 'lucide-react'
 import { useStore } from '../../store/useStore'
 import { addWeeks, isoWeekNumber } from '../../lib/date'
-import { cloneCandidates, indexById, memberLoad } from '../../lib/selectors'
+import { cloneCandidates, indexById, isDone, memberLoad } from '../../lib/selectors'
+import { STAGE_IDS } from '../../lib/constants'
+import PendingAssignments from './PendingAssignments'
 import { Avatar, CapacityBar, Toast } from '../ui/Primitives'
 import { LoadPill, Semaphore } from '../ui/Badges'
 import AssignmentItem from './AssignmentItem'
@@ -61,6 +63,13 @@ function MyWeekContent({ week, member, members, onMemberChange }) {
   const ints = indexById(state.integrations)
   const projs = indexById(state.projects)
   const cloneHours = candidates.reduce((s, a) => s + Number(a.hours), 0)
+  // Interfaces de las que es responsable y que aún no tienen horas suyas esta semana
+  const pending = useMemo(() => {
+    const logged = new Set(load.allocations.map((a) => a.integrationId))
+    return state.integrations
+      .filter((i) => i.ownerId === member.id && !logged.has(i.id) && !isDone(i))
+      .sort((a, b) => STAGE_IDS.indexOf(b.stage) - STAGE_IDS.indexOf(a.stage) || a.name.localeCompare(b.name))
+  }, [state.integrations, load.allocations, member.id])
 
   const clone = () => {
     const n = actions.cloneAllocations(candidates, week)
@@ -129,10 +138,13 @@ function MyWeekContent({ week, member, members, onMemberChange }) {
         />
       )}
 
+      <PendingAssignments items={pending} projects={projs} member={member} week={week} onLogged={setToast} />
+
       {load.allocations.length === 0 ? (
+        pending.length > 0 && candidates.length === 0 ? null : (
         <div className="card flex flex-col items-center gap-3 px-6 py-12 text-center">
           <CalendarPlus className="h-10 w-10 text-slate-300" />
-          <p className="text-base font-semibold text-slate-800">Aún no registras carga para la semana {isoWeekNumber(week)}</p>
+          <p className="text-base font-semibold text-slate-800">Aún no registras horas para la semana {isoWeekNumber(week)}</p>
           <p className="max-w-md text-sm text-slate-600">
             Clona tu semana pasada para partir con tus tareas recurrentes, o añade una asignación nueva.
           </p>
@@ -142,6 +154,7 @@ function MyWeekContent({ week, member, members, onMemberChange }) {
             </button>
           )}
         </div>
+        )
       ) : (
         <div className="space-y-4">
           <h2 className="text-sm font-semibold text-slate-700">
